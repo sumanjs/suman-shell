@@ -1,0 +1,191 @@
+Error: Cannot find module 'lockfile'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'function-arguments'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'pragmatik'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'ascii-table'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'rimrak'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'siamese'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'tcp-ping'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'socket.io'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'socket.io-client'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'suman-utils'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'suman-events'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'underscore'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+Error: Cannot find module 'replacestream'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:41:5
+    at Array.forEach (native)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/lib/worker.js:39:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+ => Suman warning => Using default configuration, please use suman --init to create a suman.conf.js file in the root of your project.
+ => [suman] =>  Node.js version => v6.10.2
+ => [suman] =>  Suman v1.1.512237 running individual test suite...
+ => [suman] =>  cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d
+
+
+	  _   _ _  _  _   .. _/__   __/_
+	_\/_// / //_|/ / ..  / /_'_\ /  
+
+ 
+
+
+
+ => Suman could *not* locate your <suman-helpers-dir>; perhaps you need to update your suman.conf.js file, please see: *** 
+ sumanjs.org/conf.html 
+  => We expected to find your <suman-helpers-dir> here => 
+ /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/suman 
+ ...We will create a temporary suman helpers directory to keep things moving.
+Error: EEXIST: file already exists, mkdir '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/suman-1498171268292'
+    at Error (na
+
+ve)
+    at Object.fs.mkdirSync (fs.js:923:18)
+    at module.exports (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/lib/helpers/resolve-shared-dirs.js:47:20)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/lib/index.js:69:58)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+    at tryModuleLoad (module.js:446:12)
+    at Function.Module._load (module.js:438:3)
+    at Module.require (module.js:497:17)
+
+
+  => Suman fatal problem => Could not create logs directory in your sumanHelpersDir,
+please report this issue. Original error => 
+Error: EEXIST: file already exists, mkdir '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d/suman-1498171268292/logs'
+    at Error (native)
+    at Object.fs.mkdirSync (fs.js:923:18)
+    at loadSharedObjects (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/lib/helpers/load-shared-objects.js:33:16)
+    at Object.<anonymous> (/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/lib/index.js:70:56)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+    at tryModuleLoad (module.js:446:12)
+    at Function.Module._load (module.js:438:3)
+    at Module.require (module.js:497:17) 
+
+
