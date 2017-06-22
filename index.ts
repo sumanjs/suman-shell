@@ -29,13 +29,19 @@ const p = new Pool({
   filePath: path.resolve(__dirname + '/lib/worker.js'),
   getSharedWritableStream,
   addWorkerOnExit: true,
-  oneTimeOnly: true
+  oneTimeOnly: true,
+  inheritStdio: true
 });
 
 
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function(data: string){
+
+  if(String(data).match(/stop/)){
+    p.killAllActiveWorkers();
+    return;
+  }
 
   let testFilePath = path.resolve(__dirname + '/test/one.test.js');
   console.log('data received => ', data);

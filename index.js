@@ -20,10 +20,15 @@ var p = new poolio_1.Pool({
     filePath: path.resolve(__dirname + '/lib/worker.js'),
     getSharedWritableStream: getSharedWritableStream,
     addWorkerOnExit: true,
-    oneTimeOnly: true
+    oneTimeOnly: true,
+    inheritStdio: true
 });
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', function (data) {
+    if (String(data).match(/stop/)) {
+        p.killAllActiveWorkers();
+        return;
+    }
     var testFilePath = path.resolve(__dirname + '/test/one.test.js');
     console.log('data received => ', data);
     p.any({ testFilePath: testFilePath }).then(function (result) {
