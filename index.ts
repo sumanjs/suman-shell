@@ -28,7 +28,8 @@ const p = new Pool({
   size: 3,
   filePath: path.resolve(__dirname + '/lib/worker.js'),
   getSharedWritableStream,
-  addWorkerOnExit: true
+  addWorkerOnExit: true,
+  oneTimeOnly: true
 });
 
 
@@ -37,6 +38,7 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', function(data: string){
 
   let testFilePath = path.resolve(__dirname + '/test/one.test.js');
+  console.log('data received => ', data);
 
   p.any({testFilePath}).then(function(result){
 

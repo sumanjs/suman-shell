@@ -33,6 +33,7 @@
     "residence": "0.0.205"
   },
   "devDependencies": {
-    "@types/node": "^8.0.1"
+    "@types/node": "^8.0.1",
+    "bluebird": "^3.5.0"
   }
 }

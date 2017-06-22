@@ -19,11 +19,13 @@ var p = new poolio_1.Pool({
     size: 3,
     filePath: path.resolve(__dirname + '/lib/worker.js'),
     getSharedWritableStream: getSharedWritableStream,
-    addWorkerOnExit: true
+    addWorkerOnExit: true,
+    oneTimeOnly: true
 });
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', function (data) {
     var testFilePath = path.resolve(__dirname + '/test/one.test.js');
+    console.log('data received => ', data);
     p.any({ testFilePath: testFilePath }).then(function (result) {
         console.log('result => ', result);
     }, function (err) {
