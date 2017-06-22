@@ -1,0 +1,32 @@
+{
+  "name": "suman-d",
+  "version": "0.0.1001",
+  "description": "Helps run suman tests quickly at the command line",
+  "main": "index.js",
+  "scripts": {
+    "test": "suman"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumanjs/suman-d.git"
+  },
+  "keywords": [
+    "suman",
+    "test",
+    "speed",
+    "performance",
+    "npm",
+    "sumanjs",
+    "mocha",
+    "ava"
+  ],
+  "author": "Olegzandr VD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sumanjs/suman-d/issues"
+  },
+  "homepage": "https://github.com/sumanjs/suman-d#readme",
+  "dependencies": {
+    "poolio": "^0.2.54003"
+  }
+}
