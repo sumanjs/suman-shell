@@ -15,26 +15,38 @@ var projectRoot = residence.findProjectRoot(process.cwd());
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
-var p = new poolio_1.Pool({
+var filePath = path.resolve(__dirname + '/lib/worker.js');
+var defaultOptions = {
     size: 3,
-    filePath: path.resolve(__dirname + '/lib/worker.js'),
     getSharedWritableStream: getSharedWritableStream,
     addWorkerOnExit: true,
     oneTimeOnly: true,
     inheritStdio: true
-});
-process.stdin.setEncoding('utf8');
-process.stdin.on('data', function (data) {
-    if (String(data).match(/s/)) {
-        console.log('killing all active workers...');
-        p.killAllActiveWorkers();
-        return;
-    }
-    var testFilePath = path.resolve(__dirname + '/test/one.test.js');
-    console.log('data received => ', data);
-    p.any({ testFilePath: testFilePath }).then(function (result) {
-        console.log('result => ', result);
-    }, function (err) {
-        console.error(err.stack || err);
+};
+exports.startSumanD = function (opts) {
+    var p = new poolio_1.Pool(Object.assign({}, defaultOptions, opts, {
+        filePath: filePath
+    }));
+    process.stdin
+        .setEncoding('utf8')
+        .resume()
+        .on('data', function (data) {
+        if (String(data).match(/s/)) {
+            console.log('killing all active workers...');
+            p.killAllActiveWorkers();
+            return;
+        }
+        var testFilePath = path.resolve(__dirname + '/test/one.test.js');
+        console.log('data received => ', data);
+        p.any({ testFilePath: testFilePath }).then(function (result) {
+            console.log('result => ', result);
+        }, function (err) {
+            console.error(err.stack || err);
+        });
     });
-});
+    return function cleanUpSumanD() {
+        process.stdin.end();
+    };
+};
+var $exports = module.exports;
+exports.default = $exports;
