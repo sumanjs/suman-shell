@@ -38,7 +38,8 @@ process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function(data: string){
 
-  if(String(data).match(/stop/)){
+  if(String(data).match(/s/)){
+    console.log('killing all active workers...');
     p.killAllActiveWorkers();
     return;
   }

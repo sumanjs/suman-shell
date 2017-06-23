@@ -25,7 +25,8 @@ var p = new poolio_1.Pool({
 });
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', function (data) {
-    if (String(data).match(/stop/)) {
+    if (String(data).match(/s/)) {
+        console.log('killing all active workers...');
         p.killAllActiveWorkers();
         return;
     }
