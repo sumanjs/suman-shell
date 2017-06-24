@@ -1,6 +1,6 @@
- => [suman] =>  Node.js version => v6.10.2
- => [suman] =>  Suman v1.1.512237 running individual test suite...
- => [suman] =>  cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d
+Node.js version => v6.10.2
+Suman v1.1.512237 running individual test suite...
+cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d
 
 
 	  _   _ _  _  _   .. _/__   __/_
@@ -8,4 +8,4 @@
 
  
 
-Suman> Suman is loaded, waiting for test file input...
+Suman is loaded, waiting for test file input...
