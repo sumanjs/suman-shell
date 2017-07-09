@@ -44,25 +44,31 @@ exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
         process.nextTick(cb, null, ['dogs', 'cats', 'birds']);
     };
     var vorpal = new Vorpal();
-    vorpal
-        .command('feed [animal] [duck]')
+    vorpal.command('run [file]')
+        .description('run a single test script')
         .autocomplete({
         data: function (input, cb) {
-            console.log('input => ', input);
-            getAnimals(input, function (err, array) {
-                cb(array);
+            var basename = path.basename(input);
+            var dir = path.dirname(path.resolve(process.cwd() + ("/" + input)));
+            fs.readdir(dir, function (err, items) {
+                if (err) {
+                    return cb(null);
+                }
+                var matches = items.filter(function (item) {
+                    return String(item).match(basename);
+                });
+                return cb(matches);
             });
         }
     })
         .action(function (args, cb) {
-        console.log('args =>', args);
-        this.log('zoomba');
-        cb(null);
-    });
-    vorpal.command('run')
-        .description('run a single test')
-        .action(function (args, cb) {
-        var testFilePath = path.resolve(__dirname + '/test/one.test.js');
+        var testFilePath = path.resolve(process.cwd() + ("/" + args.file));
+        try {
+            fs.statSync(testFilePath);
+        }
+        catch (err) {
+            return cb(err.message);
+        }
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
             console.log('total time millis => ', Date.now() - begin);

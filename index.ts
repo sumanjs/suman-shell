@@ -74,27 +74,38 @@ export const startSumanD = function (projectRoot: string, sumanLibRoot: string, 
 
   const vorpal = new Vorpal();
 
-  vorpal
-  .command('feed [animal] [duck]')
+  vorpal.command('run [file]')
+  .description('run a single test script')
   .autocomplete({
     data: function (input: string, cb: Function) {
-      console.log('input => ', input);
-      getAnimals(input, function (err, array) {
-        cb(array);
+
+      const basename = path.basename(input);
+      const dir = path.dirname(path.resolve(process.cwd() + `/${input}`));
+
+      fs.readdir(dir, function (err, items) {
+        if (err) {
+          return cb(null);
+        }
+        const matches = items.filter(function (item) {
+          return String(item).match(basename);
+        });
+
+        return cb(matches);
+
       });
+
     }
   })
-  .action(function (args, cb) {
-    console.log('args =>', args);
-    this.log('zoomba');
-    cb(null);
-  });
-
-  vorpal.command('run')
-  .description('run a single test')
   .action(function (args: Array<string>, cb: Function) {
 
-    let testFilePath = path.resolve(__dirname + '/test/one.test.js');
+    let testFilePath = path.resolve(process.cwd() + `/${args.file}`);
+
+    try {
+      fs.statSync(testFilePath)
+    }
+    catch (err) {
+      return cb(err.message);
+    }
 
     const begin = Date.now();
 
