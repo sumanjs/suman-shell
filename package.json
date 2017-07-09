@@ -27,13 +27,13 @@
   },
   "homepage": "https://github.com/sumanjs/suman-d#readme",
   "dependencies": {
-    "@types/chalk": "^0.4.31",
     "chalk": "^1.1.3",
-    "poolio": "^0.2.54004",
-    "residence": "0.0.205",
-    "vorpal": "^1.12.0"
+    "poolio": "latest",
+    "residence": "latest",
+    "vorpal": "1.11.4"
   },
   "devDependencies": {
+    "@types/chalk": "^0.4.31",
     "@types/node": "^8.0.1",
     "bluebird": "^3.5.0"
   }

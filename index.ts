@@ -1,3 +1,5 @@
+'use strict';
+
 //core
 import * as path from 'path';
 
@@ -17,7 +19,6 @@ const logGood = console.log.bind(console, chalk.cyan(name));
 const logVeryGood = console.log.bind(console, chalk.green(name));
 const logWarning = console.error.bind(console, chalk.yellow.bold(name));
 const logError = console.error.bind(console, chalk.red(name));
-
 
 let getSharedWritableStream = function () {
   return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
@@ -39,88 +40,93 @@ const defaultOptions = {
   size: 3,
   getSharedWritableStream,
   addWorkerOnExit: true,
+  streamStdioAfterDelegation: true,
   oneTimeOnly: true,
-  inheritStdio: true
+  inheritStdio: true,
+  resolveWhenWorkerExits: true
 };
 
-export const startSumanD = function (opts: ISubsetSumanDOptions) {
+export const startSumanD = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions,) {
 
-  const cwd : string= process.cwd();
-  const projectRoot = residence.findProjectRoot(cwd);
-
+  const cwd: string = process.cwd();
   const sliceCount = Math.max(0, String(cwd).length - 20);
   const shortCWD = String(cwd).slice(sliceCount);
 
-  // const p = new Pool(Object.assign({}, defaultOptions, opts, {
-  //   filePath
-  // }));
+  process.on('uncaughtException', function (e) {
+    console.error('caught exception => ', e.stack || e);
+  });
 
+  debugger;
+
+  console.log('SUMAN_LIBRARY_ROOT_PATH => ', sumanLibRoot);
+
+  const p = new Pool(Object.assign({}, defaultOptions, opts, {
+    filePath,
+    env: Object.assign({}, process.env, {
+      SUMAN_LIBRARY_ROOT_PATH: sumanLibRoot,
+      SUMAN_PROJECT_ROOT: projectRoot
+    })
+  }));
+
+  let getAnimals = function (input, cb) {
+    process.nextTick(cb, null, ['dogs', 'cats', 'birds']);
+  };
 
   const vorpal = new Vorpal();
 
   vorpal
-    .command('foo', 'Outputs "bar".')
-    .action(function (args: Array<string>, cb: Function) {
-      this.log('bar');
-      cb();
+  .command('feed [animal] [duck]')
+  .autocomplete({
+    data: function (input: string, cb: Function) {
+      console.log('input => ', input);
+      getAnimals(input, function (err, array) {
+        cb(array);
+      });
+    }
+  })
+  .action(function (args, cb) {
+    console.log('args =>', args);
+    this.log('zoomba');
+    cb(null);
+  });
+
+  vorpal.command('run')
+  .description('run a single test')
+  .action(function (args: Array<string>, cb: Function) {
+
+    let testFilePath = path.resolve(__dirname + '/test/one.test.js');
+
+    const begin = Date.now();
+
+    p.anyCB({testFilePath}, function (err, result) {
+
+      console.log('total time millis => ', Date.now() - begin);
+
+      cb(null);
     });
-
-
-  let getAnimals = function(input, cb){
-     process.nextTick(cb,null,['dogs','cats','birds']);
-  };
-
-  vorpal.command('feed [animal] [duck]')
-    .autocomplete({
-      data: function (input: string, cb: Function) {
-        console.log('input => ', input);
-        getAnimals(input, function (err, array) {
-          cb(array);
-        });
-      }
-    })
-    .action(function(args,cb){
-      console.log('args =>',args);
-       this.log('zoomba');
-       cb(null);
-    });
-
+  });
 
   vorpal
-    .delimiter(shortCWD + chalk.magenta(' / $suman>'))
-    .show();
+  .delimiter(shortCWD + chalk.magenta(' / suman>'))
+  .show();
 
-  // const to = setTimeout(function(){
-  //     process.stdin.end();
-  //     console.log('No stdin was received after 10 seconds..closing...');
-  //     process.exit(0);
-  // },10000);
-  //
-  // process.stdin
-  //   .setEncoding('utf8')
-  //   .resume()
-  //   .on('data', function (data: string) {
-  //
-  //     clearTimeout(to);
-  //
-  //     if (String(data).match(/s/)) {
-  //       console.log('killing all active workers...');
-  //       p.killAllActiveWorkers();
-  //       return;
-  //     }
-  //
-  //     let testFilePath = path.resolve(__dirname + '/test/one.test.js');
-  //     console.log('data received => ', data);
-  //
-  //     p.any({testFilePath}).then(function (result) {
-  //
-  //       console.log('result => ', result);
-  //
-  //     }, function (err: Error) {
-  //       console.error(err.stack || err);
-  //     });
-  //
-  //   });
+  const to = setTimeout(function () {
+    process.stdin.end();
+    console.log('No stdin was received after 45 seconds..closing...');
+    p.killAllImmediately();
+    process.exit(0);
+  }, 45000);
+
+  process.stdin
+  // .setEncoding('utf8')
+  // .resume()
+  .on('data', function customOnData(data: string) {
+    clearTimeout(to);
+    if (String(data) === 'q') {
+      console.log('killing all active workers.');
+      p.killAllActiveWorkers();
+    }
+  });
 
   return function cleanUpSumanD(): void {
 
