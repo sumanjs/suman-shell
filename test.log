@@ -1,6 +1,6 @@
-Node.js version => v6.10.2
-Suman v1.1.512239 running individual test suite...
-cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-d
+ => [suman] =>  Node.js version => v6.10.2
+ => [suman] =>  Suman v1.1.512239 running individual test suite...
+ => [suman] =>  cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman
 
 
 	  _   _ _  _  _   .. _/__   __/_
@@ -20,6 +20,7 @@ attempting to load =>  camelcase
 loaded =>  camelcase
 attempting to load =>  chai
 attempting to load 2 =>  chai
+loaded 2 =>  chai
 attempting to load =>  chalk
 loaded =>  chalk
 attempting to load =>  chmodr
@@ -30,42 +31,60 @@ attempting to load =>  du
 loaded =>  du
 attempting to load =>  freeze-existing-props
 attempting to load 2 =>  freeze-existing-props
+loaded 2 =>  freeze-existing-props
 attempting to load =>  function-arguments
 attempting to load 2 =>  function-arguments
+loaded 2 =>  function-arguments
 attempting to load =>  lockfile
 attempting to load 2 =>  lockfile
+loaded 2 =>  lockfile
 attempting to load =>  lodash.flatten
 attempting to load 2 =>  lodash.flatten
+loaded 2 =>  lodash.flatten
 attempting to load =>  lodash.flattendeep
 attempting to load 2 =>  lodash.flattendeep
+loaded 2 =>  lodash.flattendeep
 attempting to load =>  lodash.includes
 attempting to load 2 =>  lodash.includes
+loaded 2 =>  lodash.includes
 attempting to load =>  lodash.intersection
 attempting to load 2 =>  lodash.intersection
+loaded 2 =>  lodash.intersection
 attempting to load =>  lodash.mapvalues
 attempting to load 2 =>  lodash.mapvalues
+loaded 2 =>  lodash.mapvalues
 attempting to load =>  lodash.merge
 attempting to load 2 =>  lodash.merge
+loaded 2 =>  lodash.merge
 attempting to load =>  lodash.shuffle
 attempting to load 2 =>  lodash.shuffle
+loaded 2 =>  lodash.shuffle
 attempting to load =>  lodash.sortby
 attempting to load 2 =>  lodash.sortby
+loaded 2 =>  lodash.sortby
 attempting to load =>  lodash.uniq
 attempting to load 2 =>  lodash.uniq
+loaded 2 =>  lodash.uniq
 attempting to load =>  lodash.uniqby
 attempting to load 2 =>  lodash.uniqby
+loaded 2 =>  lodash.uniqby
 attempting to load =>  make-beep
 attempting to load 2 =>  make-beep
+loaded 2 =>  make-beep
 attempting to load =>  mkdirp
 loaded =>  mkdirp
 attempting to load =>  pragmatik
 attempting to load 2 =>  pragmatik
+loaded 2 =>  pragmatik
 attempting to load =>  prepend-transform
 attempting to load 2 =>  prepend-transform
+loaded 2 =>  prepend-transform
 attempting to load =>  progress
 attempting to load 2 =>  progress
+loaded 2 =>  progress
 attempting to load =>  replacestream
 attempting to load 2 =>  replacestream
+loaded 2 =>  replacestream
 attempting to load =>  request
 loaded =>  request
 attempting to load =>  require-from-string
@@ -84,6 +103,7 @@ attempting to load =>  socket.io-client
 loaded =>  socket.io-client
 attempting to load =>  sqlite3
 attempting to load 2 =>  sqlite3
+loaded 2 =>  sqlite3
 attempting to load =>  suman-browser-polyfills
 attempting to load 2 =>  suman-browser-polyfills
 attempting to load =>  suman-reporters
@@ -100,6 +120,7 @@ attempting to load =>  suman-utils
 loaded =>  suman-utils
 attempting to load =>  tap-parser
 attempting to load 2 =>  tap-parser
+loaded 2 =>  tap-parser
 attempting to load =>  tcp-ping
 loaded =>  tcp-ping
 attempting to load =>  underscore
@@ -110,4 +131,47 @@ attempting to load =>  v8flags
 loaded =>  v8flags
 attempting to load =>  websocket-stream
 attempting to load 2 =>  websocket-stream
+loaded 2 =>  websocket-stream
 Suman is loaded, waiting for test file input...
+m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/exp.js
+123
+	 ✔  'is true' (< 1ms)
+
+
+
+
+	.----------------------------------------------------------------------------------------.
+	|                             Results for: /test/src/exp.js                              |
+	|----------------------------------------------------------------------------------------|
+	|            Metric             |       Value       |              Comments              |
+	|-------------------------------|-------------------|------------------------------------|
+	| Status                        | Ran to completion |                                    |
+	| Num. of Unskipped Test Blocks |                 1 |                                    |
+	| Test blocks skipped           |                 - |                                    |
+	| Hooks skipped                 |                 - |                                  - |
+	| Hooks stubbed                 |                 - |                                  - |
+	| --------------------------    |               --- |                                  - |
+	| Tests skipped                 |                 - |                                    |
+	| Tests stubbed                 |                 - |                                    |
+	| Tests passed                  |                 1 |                                    |
+	| Tests failed                  |                 - |                                    |
+	| Tests total                   |                 1 |                                    |
+	| --------------------------    |               --- |                                  - |
+	| Passing rate                  |           100.00% |                                    |
+	| Actual time millis (delta)    |                49 |                                  - |
+	| Actual time seconds (delta)   |            0.0490 |                                  - |
+	| Total time millis (delta)     |              3734 |                                  - |
+	| Total time seconds (delta)    |            3.7340 |                                  - |
+	'----------------------------------------------------------------------------------------'
+
+
+
+
+ => You have some additional errors/warnings - check the test debug log for more information.
+ => /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/_suman/logs/test-debug.log
+
+
+
+ => Suman test is exiting with code 0  
+
+
