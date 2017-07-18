@@ -1,142 +1,31 @@
- => [suman] =>  Node.js version => v6.10.2
- => [suman] =>  Suman v1.1.512239 running individual test suite...
- => [suman] =>  cwd: /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman
-
-
-	  _   _ _  _  _   .. _/__   __/_
-	_\/_// / //_|/ / ..  / /_'_\ /  
-
- 
-
-attempting to load =>  ansi-256-colors
-loaded =>  ansi-256-colors
-attempting to load =>  ascii-table
-loaded =>  ascii-table
-attempting to load =>  async
-loaded =>  async
-attempting to load =>  builtin-modules
-loaded =>  builtin-modules
-attempting to load =>  camelcase
-loaded =>  camelcase
-attempting to load =>  chai
-attempting to load 2 =>  chai
-loaded 2 =>  chai
-attempting to load =>  chalk
-loaded =>  chalk
-attempting to load =>  chmodr
-loaded =>  chmodr
-attempting to load =>  dashdash
-loaded =>  dashdash
-attempting to load =>  du
-loaded =>  du
-attempting to load =>  freeze-existing-props
-attempting to load 2 =>  freeze-existing-props
-loaded 2 =>  freeze-existing-props
-attempting to load =>  function-arguments
-attempting to load 2 =>  function-arguments
-loaded 2 =>  function-arguments
-attempting to load =>  lockfile
-attempting to load 2 =>  lockfile
-loaded 2 =>  lockfile
-attempting to load =>  lodash.flatten
-attempting to load 2 =>  lodash.flatten
-loaded 2 =>  lodash.flatten
-attempting to load =>  lodash.flattendeep
-attempting to load 2 =>  lodash.flattendeep
-loaded 2 =>  lodash.flattendeep
-attempting to load =>  lodash.includes
-attempting to load 2 =>  lodash.includes
-loaded 2 =>  lodash.includes
-attempting to load =>  lodash.intersection
-attempting to load 2 =>  lodash.intersection
-loaded 2 =>  lodash.intersection
-attempting to load =>  lodash.mapvalues
-attempting to load 2 =>  lodash.mapvalues
-loaded 2 =>  lodash.mapvalues
-attempting to load =>  lodash.merge
-attempting to load 2 =>  lodash.merge
-loaded 2 =>  lodash.merge
-attempting to load =>  lodash.shuffle
-attempting to load 2 =>  lodash.shuffle
-loaded 2 =>  lodash.shuffle
-attempting to load =>  lodash.sortby
-attempting to load 2 =>  lodash.sortby
-loaded 2 =>  lodash.sortby
-attempting to load =>  lodash.uniq
-attempting to load 2 =>  lodash.uniq
-loaded 2 =>  lodash.uniq
-attempting to load =>  lodash.uniqby
-attempting to load 2 =>  lodash.uniqby
-loaded 2 =>  lodash.uniqby
-attempting to load =>  make-beep
-attempting to load 2 =>  make-beep
-loaded 2 =>  make-beep
-attempting to load =>  mkdirp
-loaded =>  mkdirp
-attempting to load =>  pragmatik
-attempting to load 2 =>  pragmatik
-loaded 2 =>  pragmatik
-attempting to load =>  prepend-transform
-attempting to load 2 =>  prepend-transform
-loaded 2 =>  prepend-transform
-attempting to load =>  progress
-attempting to load 2 =>  progress
-loaded 2 =>  progress
-attempting to load =>  replacestream
-attempting to load 2 =>  replacestream
-loaded 2 =>  replacestream
-attempting to load =>  request
-loaded =>  request
-attempting to load =>  require-from-string
-loaded =>  require-from-string
-attempting to load =>  residence
-loaded =>  residence
-attempting to load =>  rimraf
-loaded =>  rimraf
-attempting to load =>  semver
-loaded =>  semver
-attempting to load =>  siamese
-loaded =>  siamese
-attempting to load =>  socket.io
-loaded =>  socket.io
-attempting to load =>  socket.io-client
-loaded =>  socket.io-client
-attempting to load =>  sqlite3
-attempting to load 2 =>  sqlite3
-loaded 2 =>  sqlite3
-attempting to load =>  suman-browser-polyfills
-attempting to load 2 =>  suman-browser-polyfills
-attempting to load =>  suman-reporters
-attempting to load 2 =>  suman-reporters
-attempting to load =>  suman-debug
-loaded =>  suman-debug
-attempting to load =>  suman-events
-loaded =>  suman-events
-attempting to load =>  suman-run-plugins
-attempting to load 2 =>  suman-run-plugins
-attempting to load =>  suman-transform-plugins
-loaded =>  suman-transform-plugins
-attempting to load =>  suman-utils
-loaded =>  suman-utils
-attempting to load =>  tap-parser
-attempting to load 2 =>  tap-parser
-loaded 2 =>  tap-parser
-attempting to load =>  tcp-ping
-loaded =>  tcp-ping
-attempting to load =>  underscore
-loaded =>  underscore
-attempting to load =>  uuid
-loaded =>  uuid
-attempting to load =>  v8flags
-loaded =>  v8flags
-attempting to load =>  websocket-stream
-attempting to load 2 =>  websocket-stream
-loaded 2 =>  websocket-stream
-Suman is loaded, waiting for test file input...
 m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/exp.js
-123
-	 ✔  'is true' (< 1ms)
-
+reporters last ditch: loading tap reporter
+suman tap reporter says: suman inception is 0, we may not need to load this reporter.
+ => [suman] =>  TAP reporter loaded ZZZZZ.
+after desc =>  ooooooo
+after desc =>  xxxx
+after desc =>  eeeeeeee
+after desc =>  yyyyyyy
+after desc =>  uuuuuuuuu
+ok 1 is normal
+ok 2 is skipped # SKIP -
+ok 3 is stubbed # STUBBED -
+ok 4 zoooom1 # STUBBED -
+ok 5 zoooom2A # STUBBED -
+ok 6 zoooom2A # STUBBED -
+ok 7 zoooom2A # STUBBED -
+ok 8 zoooom2A # STUBBED -
+ok 9 zoooom2A # STUBBED -
+ok 10 zoooom2A # STUBBED -
+original thought - eeeeeeee.
+ok 11 zoooom2B # STUBBED -
+ok 12 zoooom2B # STUBBED -
+original thought - uuuuuuuuu.
+original thought - yyyyyyy.
+ok 13 zoooom2C # STUBBED -
+ok 14 zoooom3C # STUBBED -
+original thought.
+original thought xxxx.
 
 
 
@@ -146,29 +35,24 @@ m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suma
 	|            Metric             |       Value       |              Comments              |
 	|-------------------------------|-------------------|------------------------------------|
 	| Status                        | Ran to completion |                                    |
-	| Num. of Unskipped Test Blocks |                 1 |                                    |
+	| Num. of Unskipped Test Blocks |                 6 |                                    |
 	| Test blocks skipped           |                 - |                                    |
 	| Hooks skipped                 |                 - |                                  - |
 	| Hooks stubbed                 |                 - |                                  - |
 	| --------------------------    |               --- |                                  - |
-	| Tests skipped                 |                 - |                                    |
-	| Tests stubbed                 |                 - |                                    |
+	| Tests skipped                 |                 1 |                                    |
+	| Tests stubbed                 |                12 |                                    |
 	| Tests passed                  |                 1 |                                    |
 	| Tests failed                  |                 - |                                    |
-	| Tests total                   |                 1 |                                    |
+	| Tests total                   |                14 |                                    |
 	| --------------------------    |               --- |                                  - |
-	| Passing rate                  |           100.00% |                                    |
-	| Actual time millis (delta)    |                49 |                                  - |
-	| Actual time seconds (delta)   |            0.0490 |                                  - |
-	| Total time millis (delta)     |              3734 |                                  - |
-	| Total time seconds (delta)    |            3.7340 |                                  - |
+	| Passing rate                  |             7.14% |                                    |
+	| Actual time millis (delta)    |                50 |                                  - |
+	| Actual time seconds (delta)   |            0.0500 |                                  - |
+	| Total time millis (delta)     |             21776 |                                  - |
+	| Total time seconds (delta)    |           21.7760 |                                  - |
 	'----------------------------------------------------------------------------------------'
 
-
-
-
- => You have some additional errors/warnings - check the test debug log for more information.
- => /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/_suman/logs/test-debug.log
 
 
 

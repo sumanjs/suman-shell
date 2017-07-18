@@ -42,8 +42,10 @@ const defaultOptions = {
   addWorkerOnExit: true,
   streamStdioAfterDelegation: true,
   oneTimeOnly: true,
-  inheritStdio: true,
-  resolveWhenWorkerExits: true
+  inheritStdio: false,
+  resolveWhenWorkerExits: true,
+  stdout: process.stdout,
+  stderr: process.stderr
 };
 
 export const startSumanD = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions,) {

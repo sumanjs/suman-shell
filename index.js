@@ -21,8 +21,10 @@ var defaultOptions = {
     addWorkerOnExit: true,
     streamStdioAfterDelegation: true,
     oneTimeOnly: true,
-    inheritStdio: true,
-    resolveWhenWorkerExits: true
+    inheritStdio: false,
+    resolveWhenWorkerExits: true,
+    stdout: process.stdout,
+    stderr: process.stderr
 };
 exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
     var cwd = process.cwd();
