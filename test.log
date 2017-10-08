@@ -1,61 +1,44 @@
-m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/exp.js
-reporters last ditch: loading tap reporter
-suman tap reporter says: suman inception is 0, we may not need to load this reporter.
- => [suman] =>  TAP reporter loaded ZZZZZ.
-after desc =>  ooooooo
-after desc =>  xxxx
-after desc =>  eeeeeeee
-after desc =>  yyyyyyy
-after desc =>  uuuuuuuuu
-ok 1 is normal
-ok 2 is skipped # SKIP -
-ok 3 is stubbed # STUBBED -
-ok 4 zoooom1 # STUBBED -
-ok 5 zoooom2A # STUBBED -
-ok 6 zoooom2A # STUBBED -
-ok 7 zoooom2A # STUBBED -
-ok 8 zoooom2A # STUBBED -
-ok 9 zoooom2A # STUBBED -
-ok 10 zoooom2A # STUBBED -
-original thought - eeeeeeee.
-ok 11 zoooom2B # STUBBED -
-ok 12 zoooom2B # STUBBED -
-original thought - uuuuuuuuu.
-original thought - yyyyyyy.
-ok 13 zoooom2C # STUBBED -
-ok 14 zoooom3C # STUBBED -
-original thought.
-original thought xxxx.
+m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/dev/node/1.test.js
+ [suman] last-ditch effort to load a reporter: loading std reporter 
+
+
+
+
+ [suman] Pushing 1 test suites onto queue with concurrency 3. 
+
+   [1] ✔ 'sync test' (1ms)
 
 
 
 	.----------------------------------------------------------------------------------------.
-	|                             Results for: /test/src/exp.js                              |
+	|                       Results for: /test/src/dev/node/1.test.js                        |
 	|----------------------------------------------------------------------------------------|
 	|            Metric             |       Value       |              Comments              |
 	|-------------------------------|-------------------|------------------------------------|
 	| Status                        | Ran to completion |                                    |
-	| Num. of Unskipped Test Blocks |                 6 |                                    |
+	| Num. of Unskipped Test Blocks |                 1 |                                    |
 	| Test blocks skipped           |                 - |                                    |
 	| Hooks skipped                 |                 - |                                  - |
 	| Hooks stubbed                 |                 - |                                  - |
 	| --------------------------    |               --- |                                  - |
-	| Tests skipped                 |                 1 |                                    |
-	| Tests stubbed                 |                12 |                                    |
+	| Tests skipped                 |                 - |                                    |
+	| Tests stubbed                 |                 - |                                    |
 	| Tests passed                  |                 1 |                                    |
 	| Tests failed                  |                 - |                                    |
-	| Tests total                   |                14 |                                    |
+	| Tests total                   |                 1 |                                    |
 	| --------------------------    |               --- |                                  - |
-	| Passing rate                  |             7.14% |                                    |
-	| Actual time millis (delta)    |                50 |                                  - |
-	| Actual time seconds (delta)   |            0.0500 |                                  - |
-	| Total time millis (delta)     |             21776 |                                  - |
-	| Total time seconds (delta)    |           21.7760 |                                  - |
+	| Passing rate                  |           100.00% |                                    |
+	| Actual time millis (delta)    |                33 |                                  - |
+	| Actual time seconds (delta)   |            0.0330 |                                  - |
+	| Total time millis (delta)     |              3791 |                                  - |
+	| Total time seconds (delta)    |            3.7910 |                                  - |
 	'----------------------------------------------------------------------------------------'
 
 
+ [suman]  => All "exit" codes from test suites =>  0 
+ [suman] Drain callback timed out, exitting +. 
 
 
- => Suman test is exiting with code 0  
+ [suman] Suman test is exiting with code 0   
 
 
