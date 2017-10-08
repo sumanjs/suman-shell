@@ -1,6 +1,13 @@
+### Folders
 .idea
 node_modules
+coverage
+.nyc_output
 
-*suman/logs/
+### matching
+*.log
 
-test-target/
+### files
+package-lock.json
+yarn.lock
+

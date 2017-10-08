@@ -48,7 +48,7 @@ const defaultOptions = {
   stderr: process.stderr
 };
 
-export const startSumanD = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions,) {
+export const startSumanD = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
 
   const cwd: string = process.cwd();
   const sliceCount = Math.max(0, String(cwd).length - 20);

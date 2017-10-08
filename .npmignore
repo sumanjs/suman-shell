@@ -1,11 +1,26 @@
+
+### folders
 node_modules
 .idea
+test
+
+### matching
 *.sh
 *.txt
 *.md
 *.ts
 *.json
-!*.d.ts
+*.yml
+*.log
+*.DS_Store
+
+### files
 .npmignore
 .gitignore
+package-lock.json
 yarn.lock
+
+### negation
+!*.d.ts
+
+
