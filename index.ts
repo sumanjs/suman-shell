@@ -48,19 +48,12 @@ const defaultOptions = {
   stderr: process.stderr
 };
 
-export const startSumanD = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
+export const startSumanShell = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
 
   const cwd: string = process.cwd();
-  const sliceCount = Math.max(0, String(cwd).length - 20);
-  const shortCWD = String(cwd).slice(sliceCount);
+  const shortCWD = String(cwd).split('/').slice(-3).join('/');
 
-  process.on('uncaughtException', function (e) {
-    console.error('caught exception => ', e.stack || e);
-  });
-
-  debugger;
-
-  console.log('SUMAN_LIBRARY_ROOT_PATH => ', sumanLibRoot);
+  console.log('short cwd => ', shortCWD);
 
   const p = new Pool(Object.assign({}, defaultOptions, opts, {
     filePath,
@@ -69,10 +62,6 @@ export const startSumanD = function (projectRoot: string, sumanLibRoot: string, 
       SUMAN_PROJECT_ROOT: projectRoot
     })
   }));
-
-  let getAnimals = function (input, cb) {
-    process.nextTick(cb, null, ['dogs', 'cats', 'birds']);
-  };
 
   const vorpal = new Vorpal();
 
@@ -112,9 +101,7 @@ export const startSumanD = function (projectRoot: string, sumanLibRoot: string, 
     const begin = Date.now();
 
     p.anyCB({testFilePath}, function (err, result) {
-
-      console.log('total time millis => ', Date.now() - begin);
-
+      log('total time millis => ', Date.now() - begin);
       cb(null);
     });
   });
@@ -125,10 +112,10 @@ export const startSumanD = function (projectRoot: string, sumanLibRoot: string, 
 
   const to = setTimeout(function () {
     process.stdin.end();
-    console.log('No stdin was received after 45 seconds..closing...');
+    console.log('No stdin was received after 25 seconds..closing...');
     p.killAllImmediately();
     process.exit(0);
-  }, 45000);
+  }, 25000);
 
   process.stdin
   // .setEncoding('utf8')
@@ -142,9 +129,8 @@ export const startSumanD = function (projectRoot: string, sumanLibRoot: string, 
   });
 
   return function cleanUpSumanD(): void {
-
+    // p.killAllImmediately();
     // process.stdin.end();
-
   };
 };
 

@@ -1,10 +1,10 @@
 {
-  "name": "suman-d",
+  "name": "suman-shell",
   "version": "0.0.1004",
   "description": "Suman-default - helps run suman tests quickly at the command line",
   "main": "index.js",
   "scripts": {
-    "test": "suman"
+    "test": "suman --default"
   },
   "repository": {
     "type": "git",

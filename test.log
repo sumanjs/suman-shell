@@ -1,42 +1,44 @@
-m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/dev/node/1.test.js
+m.msg.testFilePath =>  /Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman/test/src/dev/node/3.test.js
  [suman] last-ditch effort to load a reporter: loading std reporter 
 
 
 
 
- [suman] Pushing 1 test suites onto queue with concurrency 3. 
-
-   [1] ✔ 'sync test' (1ms)
+ [suman-std-reporter]  'std-reporter' reporter may be unable to properly indent output.
+   [1] ✔ 'sync test' (< 1ms)
+   [2] ✔ 'sync test' (< 1ms)
+   [3] ✔ 'sync test' (< 1ms)
+   [4] ✔ 'sync test' (< 1ms)
+   [5] ✔ 'sync test' (< 1ms)
+   [6] ✔ 'sync test' (< 1ms)
 
 
 
 	.----------------------------------------------------------------------------------------.
-	|                       Results for: /test/src/dev/node/1.test.js                        |
+	|                       Results for: /test/src/dev/node/3.test.js                        |
 	|----------------------------------------------------------------------------------------|
 	|            Metric             |       Value       |              Comments              |
 	|-------------------------------|-------------------|------------------------------------|
 	| Status                        | Ran to completion |                                    |
-	| Num. of Unskipped Test Blocks |                 1 |                                    |
+	| Num. of Unskipped Test Blocks |                 7 |                                    |
 	| Test blocks skipped           |                 - |                                    |
 	| Hooks skipped                 |                 - |                                  - |
 	| Hooks stubbed                 |                 - |                                  - |
 	| --------------------------    |               --- |                                  - |
 	| Tests skipped                 |                 - |                                    |
 	| Tests stubbed                 |                 - |                                    |
-	| Tests passed                  |                 1 |                                    |
+	| Tests passed                  |                 6 |                                    |
 	| Tests failed                  |                 - |                                    |
-	| Tests total                   |                 1 |                                    |
+	| Tests total                   |                 6 |                                    |
 	| --------------------------    |               --- |                                  - |
 	| Passing rate                  |           100.00% |                                    |
-	| Actual time millis (delta)    |                33 |                                  - |
-	| Actual time seconds (delta)   |            0.0330 |                                  - |
-	| Total time millis (delta)     |              3791 |                                  - |
-	| Total time seconds (delta)    |            3.7910 |                                  - |
+	| Actual time millis (delta)    |                34 |                                  - |
+	| Actual time seconds (delta)   |            0.0340 |                                  - |
+	| Total time millis (delta)     |              6788 |                                  - |
+	| Total time seconds (delta)    |            6.7880 |                                  - |
 	'----------------------------------------------------------------------------------------'
 
 
- [suman]  => All "exit" codes from test suites =>  0 
- [suman] Drain callback timed out, exitting +. 
 
 
  [suman] Suman test is exiting with code 0   

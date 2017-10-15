@@ -26,15 +26,10 @@ var defaultOptions = {
     stdout: process.stdout,
     stderr: process.stderr
 };
-exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
+exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     var cwd = process.cwd();
-    var sliceCount = Math.max(0, String(cwd).length - 20);
-    var shortCWD = String(cwd).slice(sliceCount);
-    process.on('uncaughtException', function (e) {
-        console.error('caught exception => ', e.stack || e);
-    });
-    debugger;
-    console.log('SUMAN_LIBRARY_ROOT_PATH => ', sumanLibRoot);
+    var shortCWD = String(cwd).split('/').slice(-3).join('/');
+    console.log('short cwd => ', shortCWD);
     var p = new poolio_1.Pool(Object.assign({}, defaultOptions, opts, {
         filePath: filePath,
         env: Object.assign({}, process.env, {
@@ -42,9 +37,6 @@ exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
             SUMAN_PROJECT_ROOT: projectRoot
         })
     }));
-    var getAnimals = function (input, cb) {
-        process.nextTick(cb, null, ['dogs', 'cats', 'birds']);
-    };
     var vorpal = new Vorpal();
     vorpal.command('run [file]')
         .description('run a single test script')
@@ -73,7 +65,7 @@ exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
         }
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
-            console.log('total time millis => ', Date.now() - begin);
+            log('total time millis => ', Date.now() - begin);
             cb(null);
         });
     });
@@ -82,10 +74,10 @@ exports.startSumanD = function (projectRoot, sumanLibRoot, opts) {
         .show();
     var to = setTimeout(function () {
         process.stdin.end();
-        console.log('No stdin was received after 45 seconds..closing...');
+        console.log('No stdin was received after 25 seconds..closing...');
         p.killAllImmediately();
         process.exit(0);
-    }, 45000);
+    }, 25000);
     process.stdin
         .on('data', function customOnData(data) {
         clearTimeout(to);
