@@ -11,14 +11,10 @@ import * as fs from 'fs';
 import {Writable} from "stream";
 import * as Vorpal from 'vorpal';
 
-//////////////////////////////////////////////////////////////////
+//project
+import {log} from './lib/logging';
 
-const name = ' => [suman-d] =>';
-const log = console.log.bind(console, name);
-const logGood = console.log.bind(console, chalk.cyan(name));
-const logVeryGood = console.log.bind(console, chalk.green(name));
-const logWarning = console.error.bind(console, chalk.yellow.bold(name));
-const logError = console.error.bind(console, chalk.red(name));
+//////////////////////////////////////////////////////////////////
 
 let getSharedWritableStream = function () {
   return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
@@ -36,7 +32,7 @@ export type ISubsetSumanDOptions = Partial<ISumanDOptions>;
 
 const filePath = path.resolve(__dirname + '/lib/worker.js');
 
-const defaultOptions = {
+const defaultPoolioOptions = {
   size: 3,
   getSharedWritableStream,
   addWorkerOnExit: true,
@@ -51,15 +47,14 @@ const defaultOptions = {
 export const startSumanShell = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
 
   const cwd: string = process.cwd();
-  const shortCWD = String(cwd).split('/').slice(-3).join('/');
+  const shortCWD = '/.../' + String(cwd).split('/').slice(-3).join('/');
 
-  console.log('short cwd => ', shortCWD);
-
-  const p = new Pool(Object.assign({}, defaultOptions, opts, {
+  const p = new Pool(Object.assign({}, defaultPoolioOptions, opts, {
     filePath,
     env: Object.assign({}, process.env, {
       SUMAN_LIBRARY_ROOT_PATH: sumanLibRoot,
-      SUMAN_PROJECT_ROOT: projectRoot
+      SUMAN_PROJECT_ROOT: projectRoot,
+      FORCE_COLOR:1
     })
   }));
 
@@ -101,7 +96,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     const begin = Date.now();
 
     p.anyCB({testFilePath}, function (err, result) {
-      log('total time millis => ', Date.now() - begin);
+      log.veryGood('total time millis => ', Date.now() - begin);
       cb(null);
     });
   });
@@ -112,7 +107,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
   const to = setTimeout(function () {
     process.stdin.end();
-    console.log('No stdin was received after 25 seconds..closing...');
+    log.error('No stdin was received after 25 seconds..closing...');
     p.killAllImmediately();
     process.exit(0);
   }, 25000);
@@ -123,17 +118,16 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   .on('data', function customOnData(data: string) {
     clearTimeout(to);
     if (String(data) === 'q') {
-      console.log('killing all active workers.');
+      log.warning('killing all active workers.');
       p.killAllActiveWorkers();
     }
   });
 
   return function cleanUpSumanD(): void {
-    // p.killAllImmediately();
+    p.killAllImmediately();
     // process.stdin.end();
   };
 };
 
-const $exports = module.exports;
-export default $exports;
+
 

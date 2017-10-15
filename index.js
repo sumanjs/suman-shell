@@ -5,17 +5,12 @@ var poolio_1 = require("poolio");
 var chalk = require("chalk");
 var fs = require("fs");
 var Vorpal = require("vorpal");
-var name = ' => [suman-d] =>';
-var log = console.log.bind(console, name);
-var logGood = console.log.bind(console, chalk.cyan(name));
-var logVeryGood = console.log.bind(console, chalk.green(name));
-var logWarning = console.error.bind(console, chalk.yellow.bold(name));
-var logError = console.error.bind(console, chalk.red(name));
+var logging_1 = require("./lib/logging");
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
 var filePath = path.resolve(__dirname + '/lib/worker.js');
-var defaultOptions = {
+var defaultPoolioOptions = {
     size: 3,
     getSharedWritableStream: getSharedWritableStream,
     addWorkerOnExit: true,
@@ -28,13 +23,13 @@ var defaultOptions = {
 };
 exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     var cwd = process.cwd();
-    var shortCWD = String(cwd).split('/').slice(-3).join('/');
-    console.log('short cwd => ', shortCWD);
-    var p = new poolio_1.Pool(Object.assign({}, defaultOptions, opts, {
+    var shortCWD = '/.../' + String(cwd).split('/').slice(-3).join('/');
+    var p = new poolio_1.Pool(Object.assign({}, defaultPoolioOptions, opts, {
         filePath: filePath,
         env: Object.assign({}, process.env, {
             SUMAN_LIBRARY_ROOT_PATH: sumanLibRoot,
-            SUMAN_PROJECT_ROOT: projectRoot
+            SUMAN_PROJECT_ROOT: projectRoot,
+            FORCE_COLOR: 1
         })
     }));
     var vorpal = new Vorpal();
@@ -65,7 +60,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         }
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
-            log('total time millis => ', Date.now() - begin);
+            logging_1.log.veryGood('total time millis => ', Date.now() - begin);
             cb(null);
         });
     });
@@ -74,7 +69,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .show();
     var to = setTimeout(function () {
         process.stdin.end();
-        console.log('No stdin was received after 25 seconds..closing...');
+        logging_1.log.error('No stdin was received after 25 seconds..closing...');
         p.killAllImmediately();
         process.exit(0);
     }, 25000);
@@ -82,12 +77,11 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .on('data', function customOnData(data) {
         clearTimeout(to);
         if (String(data) === 'q') {
-            console.log('killing all active workers.');
+            logging_1.log.warning('killing all active workers.');
             p.killAllActiveWorkers();
         }
     });
     return function cleanUpSumanD() {
+        p.killAllImmediately();
     };
 };
-var $exports = module.exports;
-exports.default = $exports;
