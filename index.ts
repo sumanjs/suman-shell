@@ -46,7 +46,13 @@ const defaultPoolioOptions = {
 export const startSumanShell = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
 
   const cwd: string = process.cwd();
-  const shortCWD = '/.../' + String(cwd).split('/').slice(-3).join('/');
+  // slice(-3) allows us to just use the 3 closest directories.
+  // aka: if pwd = /a/b/c/d/e/f, then /.../d/e/f
+  let shortCWD =  String(cwd).split('/').slice(-3).join('/');
+
+  if(shortCWD.length + 1 < String(cwd).length){
+    shortCWD = '/.../' + shortCWD;
+  }
 
   const p = new Pool(Object.assign({}, defaultPoolioOptions, opts, {
     filePath,
