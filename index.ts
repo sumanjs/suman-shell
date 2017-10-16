@@ -29,7 +29,6 @@ export interface ISumanDOptions {
 }
 
 export type ISubsetSumanDOptions = Partial<ISumanDOptions>;
-
 const filePath = path.resolve(__dirname + '/lib/worker.js');
 
 const defaultPoolioOptions = {
@@ -54,7 +53,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     env: Object.assign({}, process.env, {
       SUMAN_LIBRARY_ROOT_PATH: sumanLibRoot,
       SUMAN_PROJECT_ROOT: projectRoot,
-      FORCE_COLOR:1
+      FORCE_COLOR: 1
     })
   }));
 
