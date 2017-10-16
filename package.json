@@ -1,6 +1,6 @@
 {
   "name": "suman-shell",
-  "version": "0.0.1004",
+  "version": "0.0.1005",
   "description": "Suman-default - helps run suman tests quickly at the command line",
   "main": "index.js",
   "scripts": {
