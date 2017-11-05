@@ -1,5 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
+var process = require('suman-browser-polyfills/modules/process');
+var global = require('suman-browser-polyfills/modules/global');
 var path = require("path");
 var poolio_1 = require("poolio");
 var chalk = require("chalk");

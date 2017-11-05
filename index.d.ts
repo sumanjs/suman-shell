@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { Writable } from "stream";
+import { Writable } from 'stream';
 export interface ISumanDOptions {
     size: number;
     getSharedWritableStream: Writable;

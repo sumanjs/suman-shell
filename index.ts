@@ -1,5 +1,9 @@
 'use strict';
 
+//polyfills
+const process = require('suman-browser-polyfills/modules/process');
+const global = require('suman-browser-polyfills/modules/global');
+
 //core
 import * as path from 'path';
 
@@ -8,7 +12,7 @@ import * as residence from 'residence';
 import {Pool} from 'poolio';
 import * as chalk from 'chalk';
 import * as fs from 'fs';
-import {Writable} from "stream";
+import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
 
 //project
