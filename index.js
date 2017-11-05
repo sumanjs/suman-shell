@@ -23,7 +23,10 @@ var defaultPoolioOptions = {
 };
 exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     var cwd = process.cwd();
-    var shortCWD = '/.../' + String(cwd).split('/').slice(-3).join('/');
+    var shortCWD = String(cwd).split('/').slice(-3).join('/');
+    if (shortCWD.length + 1 < String(cwd).length) {
+        shortCWD = '/.../' + shortCWD;
+    }
     var p = new poolio_1.Pool(Object.assign({}, defaultPoolioOptions, opts, {
         filePath: filePath,
         env: Object.assign({}, process.env, {
@@ -51,7 +54,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         }
     })
         .action(function (args, cb) {
-        var testFilePath = path.resolve(process.cwd() + ("/" + args.file));
+        var testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + ("/" + args.file));
         try {
             fs.statSync(testFilePath);
         }
@@ -74,6 +77,8 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         process.exit(0);
     }, 25000);
     process.stdin
+        .setEncoding('utf8')
+        .resume()
         .on('data', function customOnData(data) {
         clearTimeout(to);
         if (String(data) === 'q') {
@@ -81,7 +86,6 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             p.killAllActiveWorkers();
         }
     });
-    return function cleanUpSumanD() {
-        p.killAllImmediately();
+    return function cleanUpSumanShell() {
     };
 };

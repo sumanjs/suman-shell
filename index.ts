@@ -89,7 +89,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   })
   .action(function (args: Array<string>, cb: Function) {
 
-    let testFilePath = path.resolve(process.cwd() + `/${args.file}`);
+    let testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + `/${args.file}`);
 
     try {
       fs.statSync(testFilePath)
@@ -118,8 +118,8 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   }, 25000);
 
   process.stdin
-  // .setEncoding('utf8')
-  // .resume()
+  .setEncoding('utf8')
+  .resume()
   .on('data', function customOnData(data: string) {
     clearTimeout(to);
     if (String(data) === 'q') {
@@ -128,8 +128,8 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     }
   });
 
-  return function cleanUpSumanD(): void {
-    p.killAllImmediately();
+  return function cleanUpSumanShell(): void {
+    // p.killAllImmediately();
     // process.stdin.end();
   };
 };
