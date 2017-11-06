@@ -4,5 +4,5 @@ export declare const log: {
     veryGood: any;
     warning: any;
     error: any;
-    newLine: () => void;
+    newLine: (stdout?: boolean, stderr?: boolean) => void;
 };

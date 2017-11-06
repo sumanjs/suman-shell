@@ -15,7 +15,7 @@ try {
     require.resolve('inquirer');
 }
 catch (err) {
-    logging_1.log.warning('loading suman-shell...');
+    logging_1.log.warning('loading suman-shell...please wait.');
     try {
         cp.execSync("cd " + sumanGlobalModulesPath + " && npm install inquirer");
     }
@@ -24,6 +24,13 @@ catch (err) {
         logging_1.log.error(err.stack || err);
         process.exit(1);
     }
+}
+try {
+    require('inquirer');
+}
+catch (err) {
+    logging_1.log.warning('you may be missing necessary dependences for the suman-shell CLI.');
+    logging_1.log.warning(err.message);
 }
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
@@ -41,6 +48,7 @@ var defaultPoolioOptions = {
     stderr: process.stderr
 };
 exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
+    logging_1.log.newLine();
     var cwd = process.cwd();
     var shortCWD = String(cwd).split('/').slice(-3).join('/');
     if (shortCWD.length + 1 < String(cwd).length) {
@@ -82,7 +90,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         }
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
-            logging_1.log.veryGood('total time millis => ', Date.now() - begin);
+            logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
             cb(null);
         });
     });
@@ -104,7 +112,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
                 choices: files,
             }
         ], function (result) {
-            console.log('result chosen => ', result);
+            console.log('\n', 'result chosen => ', result, '\n');
             if (!result.fileToRun) {
                 logging_1.log.warning('no file chosen to run.');
                 return process.nextTick(cb);
@@ -113,7 +121,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             var begin = Date.now();
             p.anyCB({ testFilePath: testFilePath }, function (err, result) {
                 err && logging_1.log.newLine() && logging_1.log.error(err.stack || err) && logging_1.log.newLine();
-                logging_1.log.veryGood('total time millis => ', Date.now() - begin);
+                logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
                 cb(null);
             });
         });
@@ -121,7 +129,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     vorpal.command('find [folder]')
         .description('find test files to run')
         .action(function (args, cb) {
-        console.log('args => ', args);
+        console.log('\n', 'args => ', args, '\n');
         var dir;
         if (args.folder) {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
@@ -138,12 +146,10 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .delimiter(shortCWD + chalk.magenta(' / suman>'))
         .show();
     var to = setTimeout(function () {
-        vorpal.close();
-        process.stdin.end();
         logging_1.log.error('No stdin was received after 25 seconds..closing...');
         p.killAllImmediately();
-        process.exit(0);
-    }, 5000);
+        process.exit(1);
+    }, 25000);
     process.stdin
         .setEncoding('utf8')
         .resume()

@@ -28,7 +28,7 @@ try {
   require.resolve('inquirer');
 }
 catch (err) {
-  log.warning('loading suman-shell...');
+  log.warning('loading suman-shell...please wait.');
   try {
     cp.execSync(`cd ${sumanGlobalModulesPath} && npm install inquirer`);
   }
@@ -38,6 +38,14 @@ catch (err) {
     process.exit(1);
   }
 
+}
+
+try {
+  require('inquirer');
+}
+catch (err) {
+  log.warning('you may be missing necessary dependences for the suman-shell CLI.');
+  log.warning(err.message);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -70,6 +78,8 @@ const defaultPoolioOptions = {
 };
 
 export const startSumanShell = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
+
+  log.newLine(); // we want to log a new line before `suman>`
 
   const cwd: string = process.cwd();
   // slice(-3) allows us to just use the 3 closest directories.
@@ -110,7 +120,6 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
         return cb(matches);
 
       });
-
     }
   })
   .action(function (args: Array<string>, cb: Function) {
@@ -127,7 +136,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     const begin = Date.now();
 
     p.anyCB({testFilePath}, function (err: Error, result: any) {
-      log.veryGood('total time millis => ', Date.now() - begin);
+      log.veryGood('total time millis => ', Date.now() - begin, '\n');
       cb(null);
     });
   });
@@ -154,7 +163,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
       }
     ], function (result: any) {
 
-      console.log('result chosen => ', result);
+      console.log('\n', 'result chosen => ', result, '\n');
 
       if (!result.fileToRun) {
         log.warning('no file chosen to run.');
@@ -168,7 +177,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
       p.anyCB({testFilePath}, function (err: Error, result: any) {
         err && log.newLine() && log.error(err.stack || err) && log.newLine();
-        log.veryGood('total time millis => ', Date.now() - begin);
+        log.veryGood('total time millis => ', Date.now() - begin, '\n');
         cb(null);
       });
 
@@ -179,7 +188,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   .description('find test files to run')
   .action(function (args: Array<string>, cb: Function) {
 
-    console.log('args => ', args);
+    console.log('\n', 'args => ', args, '\n');
 
     let dir;
     if (args.folder) {
@@ -200,12 +209,12 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   .show();
 
   const to = setTimeout(function () {
-    vorpal.close();
-    process.stdin.end();
+    // vorpal.end();
+    // process.stdin.end();
     log.error('No stdin was received after 25 seconds..closing...');
     p.killAllImmediately();
-    process.exit(0);
-  }, 5000);
+    process.exit(1);
+  }, 25000);
 
   process.stdin
   .setEncoding('utf8')

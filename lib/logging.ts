@@ -18,8 +18,8 @@ export const log = {
   veryGood: console.log.bind(console, chalk.green(name)),
   warning: console.log.bind(console, chalk.yellow.bold(name)),
   error: console.log.bind(console, chalk.red(name)),
-  newLine: function () {
-    console.log('\n');
-    console.error('\n');
+  newLine: function (stdout?: boolean, stderr?: boolean) {
+    stdout && console.log('\n') || console.log();
+    stderr && console.error('\n');
   }
 };
