@@ -66,6 +66,9 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             FORCE_COLOR: 1
         })
     }));
+    process.once('exit', function () {
+        p.killAllActiveWorkers();
+    });
     var vorpal = new Vorpal();
     vorpal.command('run [file]')
         .description('run a single test script')
@@ -184,10 +187,6 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .resume()
         .on('data', function customOnData(data) {
         clearTimeout(to);
-        if (String(data) === 'q') {
-            logging_1.log.warning('killing all active workers.');
-            p.killAllActiveWorkers();
-        }
     });
     return function cleanUpSumanShell() {
     };

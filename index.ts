@@ -104,6 +104,10 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     })
   }));
 
+  process.once('exit', function(){
+    p.killAllActiveWorkers();
+  });
+
   const vorpal = new Vorpal();
 
   vorpal.command('run [file]')
@@ -262,10 +266,6 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   .resume()
   .on('data', function customOnData(data: string) {
     clearTimeout(to);
-    if (String(data) === 'q') {
-      log.warning('killing all active workers.');
-      p.killAllActiveWorkers();
-    }
   });
 
   return function cleanUpSumanShell(): void {
