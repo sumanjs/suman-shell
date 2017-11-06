@@ -100,16 +100,24 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     });
     var findPrompt = function (object, dir, cb) {
         var onFindComplete = function (files) {
+            var cancelOption = '(cancel - do not run a test)';
+            files.unshift(cancelOption);
+            logging_1.log.newLine();
             object.prompt([
                 {
                     type: 'list',
                     name: 'fileToRun',
                     message: 'Choose a test script to run',
                     choices: files,
+                    default: null
                 }
             ], function (result) {
                 if (!result.fileToRun) {
                     logging_1.log.warning('no file chosen to run.');
+                    return process.nextTick(cb);
+                }
+                if (result.fileToRun === cancelOption) {
+                    logging_1.log.warning('canceled option selected.');
                     return process.nextTick(cb);
                 }
                 var testFilePath = path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);

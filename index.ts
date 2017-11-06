@@ -150,12 +150,19 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
     const onFindComplete = function (files: Array<string>) {
 
+      let cancelOption = '(cancel - do not run a test)';
+
+      files.unshift(cancelOption);
+
+      log.newLine(); // log a new line to the console
+
       object.prompt([
           {
             type: 'list',
             name: 'fileToRun',
             message: 'Choose a test script to run',
             choices: files,
+            default: null
           }
         ],
 
@@ -163,6 +170,11 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
           if (!result.fileToRun) {
             log.warning('no file chosen to run.');
+            return process.nextTick(cb);
+          }
+
+          if (result.fileToRun === cancelOption) {
+            log.warning('canceled option selected.');
             return process.nextTick(cb);
           }
 
@@ -179,17 +191,6 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
         });
     };
-
-    // let files;
-    //
-    // try {
-    //   files = fs.readdirSync(dir).map(function (item) {
-    //     return path.resolve(dir + '/' + item);
-    //   });
-    // }
-    // catch (err) {
-    //   return process.nextTick(cb, err);
-    // }
 
     const json2StdoutStream = JSON2Stdout.createParser();
 
