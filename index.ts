@@ -40,8 +40,6 @@ catch (err) {
 
 }
 
-const inquirer = require('inquirer');
-
 //////////////////////////////////////////////////////////////////
 
 let getSharedWritableStream = function () {
@@ -202,11 +200,12 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   .show();
 
   const to = setTimeout(function () {
+    vorpal.close();
     process.stdin.end();
     log.error('No stdin was received after 25 seconds..closing...');
     p.killAllImmediately();
     process.exit(0);
-  }, 25000);
+  }, 5000);
 
   process.stdin
   .setEncoding('utf8')

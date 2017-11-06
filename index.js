@@ -25,7 +25,6 @@ catch (err) {
         process.exit(1);
     }
 }
-var inquirer = require('inquirer');
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
@@ -139,11 +138,12 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .delimiter(shortCWD + chalk.magenta(' / suman>'))
         .show();
     var to = setTimeout(function () {
+        vorpal.close();
         process.stdin.end();
         logging_1.log.error('No stdin was received after 25 seconds..closing...');
         p.killAllImmediately();
         process.exit(0);
-    }, 25000);
+    }, 5000);
     process.stdin
         .setEncoding('utf8')
         .resume()
