@@ -102,7 +102,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             });
         }
         catch (err) {
-            process.nextTick(cb, err);
+            return process.nextTick(cb, err);
         }
         object.prompt([
             {
@@ -131,7 +131,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .action(function (args, cb) {
         console.log('\n', 'args => ', args, '\n');
         var dir;
-        if (args.folder) {
+        if (typeof args.folder === 'string') {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
         }
         else {
@@ -143,12 +143,14 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         });
     });
     vorpal
-        .delimiter(shortCWD + chalk.magenta(' / suman>'))
+        .delimiter(shortCWD + chalk.magenta(' // suman>'))
         .show();
     var to = setTimeout(function () {
-        logging_1.log.error('No stdin was received after 25 seconds..closing...');
+        logging_1.log.error('No stdin was received after 25 seconds...closing...');
         p.killAllImmediately();
-        process.exit(1);
+        setTimeout(function () {
+            process.exit(1);
+        }, 2000);
     }, 25000);
     process.stdin
         .setEncoding('utf8')

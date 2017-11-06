@@ -151,37 +151,39 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
       });
     }
     catch (err) {
-      process.nextTick(cb, err);
+      return process.nextTick(cb, err);
     }
 
     object.prompt([
-      {
-        type: 'list',
-        name: 'fileToRun',
-        message: 'Choose a test script to run',
-        choices: files,
-      }
-    ], function (result: any) {
+        {
+          type: 'list',
+          name: 'fileToRun',
+          message: 'Choose a test script to run',
+          choices: files,
+        }
+      ],
 
-      console.log('\n', 'result chosen => ', result, '\n');
+      function (result: any) {
 
-      if (!result.fileToRun) {
-        log.warning('no file chosen to run.');
-        return process.nextTick(cb);
-      }
+        console.log('\n', 'result chosen => ', result, '\n');
 
-      const testFilePath =
-        path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
+        if (!result.fileToRun) {
+          log.warning('no file chosen to run.');
+          return process.nextTick(cb);
+        }
 
-      const begin = Date.now();
+        const testFilePath =
+          path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
 
-      p.anyCB({testFilePath}, function (err: Error, result: any) {
-        err && log.newLine() && log.error(err.stack || err) && log.newLine();
-        log.veryGood('total time millis => ', Date.now() - begin, '\n');
-        cb(null);
+        const begin = Date.now();
+
+        p.anyCB({testFilePath}, function (err: Error, result: any) {
+          err && log.newLine() && log.error(err.stack || err) && log.newLine();
+          log.veryGood('total time millis => ', Date.now() - begin, '\n');
+          cb(null);
+        });
+
       });
-
-    });
   };
 
   vorpal.command('find [folder]')
@@ -191,7 +193,8 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     console.log('\n', 'args => ', args, '\n');
 
     let dir;
-    if (args.folder) {
+
+    if (typeof args.folder === 'string') {
       dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
     }
     else {
@@ -205,15 +208,17 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   });
 
   vorpal
-  .delimiter(shortCWD + chalk.magenta(' / suman>'))
+  .delimiter(shortCWD + chalk.magenta(' // suman>'))
   .show();
 
   const to = setTimeout(function () {
     // vorpal.end();
     // process.stdin.end();
-    log.error('No stdin was received after 25 seconds..closing...');
+    log.error('No stdin was received after 25 seconds...closing...');
     p.killAllImmediately();
-    process.exit(1);
+    setTimeout(function () {
+      process.exit(1);
+    }, 2000);
   }, 25000);
 
   process.stdin
