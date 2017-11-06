@@ -10,14 +10,17 @@ const global = require('suman-browser-polyfills/modules/global');
 //core
 import * as path from 'path';
 import * as cp from 'child_process';
+import * as util from 'util';
 
 //npm
+import JSON2Stdout = require('json-2-stdout');
 import * as residence from 'residence';
 import {Pool} from 'poolio';
 import * as chalk from 'chalk';
 import * as fs from 'fs';
 import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
+import {pt} from 'prepend-transform';
 
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
@@ -87,8 +90,10 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   let shortCWD = String(cwd).split('/').slice(-3).join('/');
 
   if (shortCWD.length + 1 < String(cwd).length) {
-    shortCWD = '/.../' + shortCWD;
+    shortCWD = ' /.../' + shortCWD;
   }
+
+  shortCWD = chalk.gray(shortCWD);
 
   const p = new Pool(Object.assign({}, defaultPoolioOptions, opts, {
     filePath,
@@ -141,67 +146,97 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     });
   });
 
-  const prompt = function (object: any, dir: string, cb: Function) {
+  const findPrompt = function (object: any, dir: string, cb: Function) {
 
-    let files;
+    const onFindComplete = function (files: Array<string>) {
 
-    try {
-      files = fs.readdirSync(dir).map(function (item) {
-        return path.resolve(dir + '/' + item);
-      });
-    }
-    catch (err) {
-      return process.nextTick(cb, err);
-    }
+      object.prompt([
+          {
+            type: 'list',
+            name: 'fileToRun',
+            message: 'Choose a test script to run',
+            choices: files,
+          }
+        ],
 
-    object.prompt([
-        {
-          type: 'list',
-          name: 'fileToRun',
-          message: 'Choose a test script to run',
-          choices: files,
-        }
-      ],
+        function (result: any) {
 
-      function (result: any) {
+          if (!result.fileToRun) {
+            log.warning('no file chosen to run.');
+            return process.nextTick(cb);
+          }
 
-        console.log('\n', 'result chosen => ', result, '\n');
+          const testFilePath =
+            path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
 
-        if (!result.fileToRun) {
-          log.warning('no file chosen to run.');
-          return process.nextTick(cb);
-        }
+          const begin = Date.now();
 
-        const testFilePath =
-          path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
+          p.anyCB({testFilePath}, function (err: Error, result: any) {
+            err && log.newLine() && log.error(err.stack || err) && log.newLine();
+            log.veryGood('total time millis => ', Date.now() - begin, '\n');
+            cb(null);
+          });
 
-        const begin = Date.now();
-
-        p.anyCB({testFilePath}, function (err: Error, result: any) {
-          err && log.newLine() && log.error(err.stack || err) && log.newLine();
-          log.veryGood('total time millis => ', Date.now() - begin, '\n');
-          cb(null);
         });
+    };
 
-      });
+    // let files;
+    //
+    // try {
+    //   files = fs.readdirSync(dir).map(function (item) {
+    //     return path.resolve(dir + '/' + item);
+    //   });
+    // }
+    // catch (err) {
+    //   return process.nextTick(cb, err);
+    // }
+
+    const json2StdoutStream = JSON2Stdout.createParser();
+
+    const k = cp.spawn('bash', [], {
+      cwd: projectRoot
+    });
+
+    let files: Array<string> = [];
+    k.once('exit', function (code, signal) {
+      if (code === 0) {
+        onFindComplete(files);
+      }
+      else {
+        log.error(' => "suman --find-only" process exited with non-zero code', code, signal ? signal : '');
+        cb(null);
+      }
+
+    });
+
+    k.stdout.pipe(JSON2Stdout.createParser()).on(JSON2Stdout.stdEventName, function (obj: any) {
+      if (obj && obj.file) {
+        files.push(obj.file);
+      }
+      else {
+        log.error('object did not have an expected "file" property => ' + util.inspect(obj));
+      }
+    });
+
+    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '))).pipe(process.stderr);
+
+    k.stdin.end(`\n suman --find-only --default \n`);
   };
 
   vorpal.command('find [folder]')
   .description('find test files to run')
   .action(function (args: Array<string>, cb: Function) {
 
-    console.log('\n', 'args => ', args, '\n');
-
     let dir;
 
-    if (typeof args.folder === 'string') {
+    if (args && typeof args.folder === 'string') {
       dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
     }
     else {
       dir = path.resolve(projectRoot + '/test');
     }
 
-    prompt(this, dir, function (err?: Error) {
+    findPrompt(this, dir, function (err?: Error) {
       err && log.error(err);
       cb(null);
     });
