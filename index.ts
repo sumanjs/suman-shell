@@ -1,11 +1,15 @@
 'use strict';
 
+//dts
+import {IGlobalSumanObj} from 'suman-types/dts/global';
+
 //polyfills
 const process = require('suman-browser-polyfills/modules/process');
 const global = require('suman-browser-polyfills/modules/global');
 
 //core
 import * as path from 'path';
+import * as cp from 'child_process';
 
 //npm
 import * as residence from 'residence';
@@ -16,7 +20,27 @@ import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
 
 //project
+const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
 import {log} from './lib/logging';
+const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
+
+try {
+  require.resolve('inquirer');
+}
+catch (err) {
+  log.warning('loading suman-shell...');
+  try {
+    cp.execSync(`cd ${sumanGlobalModulesPath} && npm install inquirer`);
+  }
+  catch (err) {
+    log.error('suman-shell could not be loaded; suman-shell cannot load the "inquirer" dependency.');
+    log.error(err.stack || err);
+    process.exit(1);
+  }
+
+}
+
+const inquirer = require('inquirer');
 
 //////////////////////////////////////////////////////////////////
 
@@ -52,9 +76,9 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   const cwd: string = process.cwd();
   // slice(-3) allows us to just use the 3 closest directories.
   // aka: if pwd = /a/b/c/d/e/f, then /.../d/e/f
-  let shortCWD =  String(cwd).split('/').slice(-3).join('/');
+  let shortCWD = String(cwd).split('/').slice(-3).join('/');
 
-  if(shortCWD.length + 1 < String(cwd).length){
+  if (shortCWD.length + 1 < String(cwd).length) {
     shortCWD = '/.../' + shortCWD;
   }
 
@@ -104,8 +128,71 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
     const begin = Date.now();
 
-    p.anyCB({testFilePath}, function (err, result) {
+    p.anyCB({testFilePath}, function (err: Error, result: any) {
       log.veryGood('total time millis => ', Date.now() - begin);
+      cb(null);
+    });
+  });
+
+  const prompt = function (object: any, dir: string, cb: Function) {
+
+    let files;
+
+    try {
+      files = fs.readdirSync(dir).map(function (item) {
+        return path.resolve(dir + '/' + item);
+      });
+    }
+    catch (err) {
+      process.nextTick(cb, err);
+    }
+
+    object.prompt([
+      {
+        type: 'list',
+        name: 'fileToRun',
+        message: 'Choose a test script to run',
+        choices: files,
+      }
+    ], function (result: any) {
+
+      console.log('result chosen => ', result);
+
+      if (!result.fileToRun) {
+        log.warning('no file chosen to run.');
+        return process.nextTick(cb);
+      }
+
+      const testFilePath =
+        path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
+
+      const begin = Date.now();
+
+      p.anyCB({testFilePath}, function (err: Error, result: any) {
+        err && log.newLine() && log.error(err.stack || err) && log.newLine();
+        log.veryGood('total time millis => ', Date.now() - begin);
+        cb(null);
+      });
+
+    });
+  };
+
+  vorpal.command('find [folder]')
+  .description('find test files to run')
+  .action(function (args: Array<string>, cb: Function) {
+
+    console.log('args => ', args);
+
+    let dir;
+    if (args.folder) {
+      dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
+    }
+    else {
+      dir = path.resolve(projectRoot + '/test');
+    }
+
+    prompt(this, dir, function (err?: Error) {
+      err && log.error(err);
       cb(null);
     });
   });

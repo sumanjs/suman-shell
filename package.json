@@ -30,6 +30,7 @@
     "chalk": "^1.1.3",
     "poolio": "latest",
     "residence": "latest",
+    "suman-browser-polyfills": "latest",
     "vorpal": "1.11.4"
   },
   "devDependencies": {

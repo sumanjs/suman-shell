@@ -3,11 +3,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var process = require('suman-browser-polyfills/modules/process');
 var global = require('suman-browser-polyfills/modules/global');
 var path = require("path");
+var cp = require("child_process");
 var poolio_1 = require("poolio");
 var chalk = require("chalk");
 var fs = require("fs");
 var Vorpal = require("vorpal");
+var _suman = global.__suman = (global.__suman || {});
 var logging_1 = require("./lib/logging");
+var sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
+try {
+    require.resolve('inquirer');
+}
+catch (err) {
+    logging_1.log.warning('loading suman-shell...');
+    try {
+        cp.execSync("cd " + sumanGlobalModulesPath + " && npm install inquirer");
+    }
+    catch (err) {
+        logging_1.log.error('suman-shell could not be loaded; suman-shell cannot load the "inquirer" dependency.');
+        logging_1.log.error(err.stack || err);
+        process.exit(1);
+    }
+}
+var inquirer = require('inquirer');
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
@@ -66,6 +84,54 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
             logging_1.log.veryGood('total time millis => ', Date.now() - begin);
+            cb(null);
+        });
+    });
+    var prompt = function (object, dir, cb) {
+        var files;
+        try {
+            files = fs.readdirSync(dir).map(function (item) {
+                return path.resolve(dir + '/' + item);
+            });
+        }
+        catch (err) {
+            process.nextTick(cb, err);
+        }
+        object.prompt([
+            {
+                type: 'list',
+                name: 'fileToRun',
+                message: 'Choose a test script to run',
+                choices: files,
+            }
+        ], function (result) {
+            console.log('result chosen => ', result);
+            if (!result.fileToRun) {
+                logging_1.log.warning('no file chosen to run.');
+                return process.nextTick(cb);
+            }
+            var testFilePath = path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
+            var begin = Date.now();
+            p.anyCB({ testFilePath: testFilePath }, function (err, result) {
+                err && logging_1.log.newLine() && logging_1.log.error(err.stack || err) && logging_1.log.newLine();
+                logging_1.log.veryGood('total time millis => ', Date.now() - begin);
+                cb(null);
+            });
+        });
+    };
+    vorpal.command('find [folder]')
+        .description('find test files to run')
+        .action(function (args, cb) {
+        console.log('args => ', args);
+        var dir;
+        if (args.folder) {
+            dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
+        }
+        else {
+            dir = path.resolve(projectRoot + '/test');
+        }
+        prompt(this, dir, function (err) {
+            err && logging_1.log.error(err);
             cb(null);
         });
     });
