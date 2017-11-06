@@ -21,10 +21,12 @@ import * as fs from 'fs';
 import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
 import {pt} from 'prepend-transform';
+import _ = require('lodash');
 
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
 import {log} from './lib/logging';
+import {makeFindPrompt} from "./lib/find-prompt";
 const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
 
 try {
@@ -104,7 +106,9 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     })
   }));
 
-  process.once('exit', function(){
+  const findPrompt = makeFindPrompt(p, projectRoot);
+
+  process.once('exit', function () {
     p.killAllActiveWorkers();
   });
 
@@ -150,87 +154,16 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     });
   });
 
-  const findPrompt = function (object: any, dir: string, cb: Function) {
-
-    const onFindComplete = function (files: Array<string>) {
-
-      let cancelOption = '(cancel - do not run a test)';
-
-      files.unshift(cancelOption);
-
-      log.newLine(); // log a new line to the console
-
-      object.prompt([
-          {
-            type: 'list',
-            name: 'fileToRun',
-            message: 'Choose a test script to run',
-            choices: files,
-            default: null
-          }
-        ],
-
-        function (result: any) {
-
-          if (!result.fileToRun) {
-            log.warning('no file chosen to run.');
-            return process.nextTick(cb);
-          }
-
-          if (result.fileToRun === cancelOption) {
-            log.warning('canceled option selected.');
-            return process.nextTick(cb);
-          }
-
-          const testFilePath =
-            path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
-
-          const begin = Date.now();
-
-          p.anyCB({testFilePath}, function (err: Error, result: any) {
-            err && log.newLine() && log.error(err.stack || err) && log.newLine();
-            log.veryGood('total time millis => ', Date.now() - begin, '\n');
-            cb(null);
-          });
-
-        });
-    };
-
-    const json2StdoutStream = JSON2Stdout.createParser();
-
-    const k = cp.spawn('bash', [], {
-      cwd: projectRoot
-    });
-
-    let files: Array<string> = [];
-    k.once('exit', function (code, signal) {
-      if (code === 0) {
-        onFindComplete(files);
-      }
-      else {
-        log.error(' => "suman --find-only" process exited with non-zero code', code, signal ? signal : '');
-        cb(null);
-      }
-
-    });
-
-    k.stdout.pipe(JSON2Stdout.createParser()).on(JSON2Stdout.stdEventName, function (obj: any) {
-      if (obj && obj.file) {
-        files.push(obj.file);
-      }
-      else {
-        log.error('object did not have an expected "file" property => ' + util.inspect(obj));
-      }
-    });
-
-    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '))).pipe(process.stderr);
-
-    k.stdin.end(`\n suman --find-only --default \n`);
-  };
-
-  vorpal.command('find [folder]')
+  vorpal.command('find')
   .description('find test files to run')
+  .option('--opts <sumanOpts>', 'Search for test scripts in subdirectories.')
+  // .option('--match-none <matchNone>', 'Size of pizza.')
+  .cancel(function () {
+    log.warning('find command was canceled.');
+  })
   .action(function (args: Array<string>, cb: Function) {
+
+    log.info('args => ', args);
 
     let dir;
 
@@ -241,7 +174,13 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
       dir = path.resolve(projectRoot + '/test');
     }
 
-    findPrompt(this, dir, function (err?: Error) {
+    let sumanOptions = _.flattenDeep([args.opts || []]);
+
+    log.info('suman options => ', sumanOptions);
+
+    sumanOptions = sumanOptions.join(' ');
+
+    findPrompt(this, dir, sumanOptions, function (err?: Error) {
       err && log.error(err);
       cb(null);
     });

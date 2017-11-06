@@ -28,9 +28,10 @@
   "homepage": "https://github.com/sumanjs/suman-d#readme",
   "dependencies": {
     "chalk": "^1.1.3",
-    "json-2-stdout":"latest",
-    "prepend-transform": "latest",
+    "json-2-stdout": "latest",
+    "lodash": "^4.17.4",
     "poolio": "latest",
+    "prepend-transform": "latest",
     "residence": "latest",
     "suman-browser-polyfills": "latest",
     "vorpal": "1.11.4"

@@ -4,15 +4,14 @@ var process = require('suman-browser-polyfills/modules/process');
 var global = require('suman-browser-polyfills/modules/global');
 var path = require("path");
 var cp = require("child_process");
-var util = require("util");
-var JSON2Stdout = require("json-2-stdout");
 var poolio_1 = require("poolio");
 var chalk = require("chalk");
 var fs = require("fs");
 var Vorpal = require("vorpal");
-var prepend_transform_1 = require("prepend-transform");
+var _ = require("lodash");
 var _suman = global.__suman = (global.__suman || {});
 var logging_1 = require("./lib/logging");
+var find_prompt_1 = require("./lib/find-prompt");
 var sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
 try {
     require.resolve('inquirer');
@@ -66,6 +65,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             FORCE_COLOR: 1
         })
     }));
+    var findPrompt = find_prompt_1.makeFindPrompt(p, projectRoot);
     process.once('exit', function () {
         p.killAllActiveWorkers();
     });
@@ -101,65 +101,14 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             cb(null);
         });
     });
-    var findPrompt = function (object, dir, cb) {
-        var onFindComplete = function (files) {
-            var cancelOption = '(cancel - do not run a test)';
-            files.unshift(cancelOption);
-            logging_1.log.newLine();
-            object.prompt([
-                {
-                    type: 'list',
-                    name: 'fileToRun',
-                    message: 'Choose a test script to run',
-                    choices: files,
-                    default: null
-                }
-            ], function (result) {
-                if (!result.fileToRun) {
-                    logging_1.log.warning('no file chosen to run.');
-                    return process.nextTick(cb);
-                }
-                if (result.fileToRun === cancelOption) {
-                    logging_1.log.warning('canceled option selected.');
-                    return process.nextTick(cb);
-                }
-                var testFilePath = path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
-                var begin = Date.now();
-                p.anyCB({ testFilePath: testFilePath }, function (err, result) {
-                    err && logging_1.log.newLine() && logging_1.log.error(err.stack || err) && logging_1.log.newLine();
-                    logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
-                    cb(null);
-                });
-            });
-        };
-        var json2StdoutStream = JSON2Stdout.createParser();
-        var k = cp.spawn('bash', [], {
-            cwd: projectRoot
-        });
-        var files = [];
-        k.once('exit', function (code, signal) {
-            if (code === 0) {
-                onFindComplete(files);
-            }
-            else {
-                logging_1.log.error(' => "suman --find-only" process exited with non-zero code', code, signal ? signal : '');
-                cb(null);
-            }
-        });
-        k.stdout.pipe(JSON2Stdout.createParser()).on(JSON2Stdout.stdEventName, function (obj) {
-            if (obj && obj.file) {
-                files.push(obj.file);
-            }
-            else {
-                logging_1.log.error('object did not have an expected "file" property => ' + util.inspect(obj));
-            }
-        });
-        k.stderr.pipe(prepend_transform_1.pt(chalk.yellow(' [suman "--find-only" process stderr] '))).pipe(process.stderr);
-        k.stdin.end("\n suman --find-only --default \n");
-    };
-    vorpal.command('find [folder]')
+    vorpal.command('find')
         .description('find test files to run')
+        .option('--opts <sumanOpts>', 'Search for test scripts in subdirectories.')
+        .cancel(function () {
+        logging_1.log.warning('find command was canceled.');
+    })
         .action(function (args, cb) {
+        logging_1.log.info('args => ', args);
         var dir;
         if (args && typeof args.folder === 'string') {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
@@ -167,7 +116,10 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         else {
             dir = path.resolve(projectRoot + '/test');
         }
-        findPrompt(this, dir, function (err) {
+        var sumanOptions = _.flattenDeep([args.opts || []]);
+        logging_1.log.info('suman options => ', sumanOptions);
+        sumanOptions = sumanOptions.join(' ');
+        findPrompt(this, dir, sumanOptions, function (err) {
             err && logging_1.log.error(err);
             cb(null);
         });
