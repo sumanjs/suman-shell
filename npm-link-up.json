@@ -9,7 +9,7 @@
   ],
   "list": [
     "poolio",
-    "json-2-stdout",
+    "json-stdio",
     "prepend-transform",
     "suman-types",
     "suman-browser-polyfills"

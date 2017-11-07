@@ -2,32 +2,38 @@
 
 ### Suman runner start ###
 
-Beginning of run at 1509906328966 = [Sun Nov 05 2017 10:25:28 GMT-0800 (PST)]
+Beginning of run at 1509956081263 = [Mon Nov 06 2017 00:14:41 GMT-0800 (PST)]
 Suman command issued from the following directory "/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell"
 Suman "process.argv" => 
 [ '/Users/alexamil/.nvm/versions/node/v6.10.2/bin/node',
-  '/Users/alexamil/.nvm/versions/node/v6.10.2/lib/node_modules/suman/cli.js' ]
+  '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-daemon/lib/suman-fast-script.js',
+  '--match-any=3',
+  '--match-any=test',
+  '--force-inception-level-zero' ]
 
-[two.test.js]  [suman] 
+[one.test.js] [31m [suman] [39m
+[one.test.js] window is not defined 
+[two.test.js] [31m [suman] [39m
 [two.test.js] window is not defined 
-[one.test.js]  [suman] window is not defined 
 
 
-[two.test.js]  [suman @tap-json-reporter]  "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
-[one.test.js]  [suman @tap-json-reporter]  "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
-[two.test.js]  [suman] 
+[one.test.js] [33m [suman @tap-json-reporter] [39m "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
+
+[two.test.js] [33m [suman @tap-json-reporter] [39m "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
+[one.test.js] [31m [suman] [39m
+[one.test.js] Cannot find module '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell/test/.suman/suman.ioc.static.js' 
+[one.test.js] [31m [suman] [39mdespite the error, suman will continue optimistically. 
+[two.test.js] [31m [suman] [39m
 [two.test.js] Cannot find module '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell/test/.suman/suman.ioc.static.js' 
-[two.test.js]  [suman] despite the error, suman will continue optimistically. 
-[one.test.js]  [suman] Cannot find module '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell/test/.suman/suman.ioc.static.js' 
-[one.test.js]  [suman] despite the error, suman will continue optimistically. 
-[two.test.js]  [suman] '<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
-[two.test.js]  [suman] despite the missing dependency, Suman will continue optimistically. 
-[one.test.js]  [suman] '<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
-[one.test.js]  [suman] despite the missing dependency, Suman will continue optimistically. 
-[two.test.js]  [suman] 
-[two.test.js] client connected. 
-[one.test.js]  [suman] 
+[two.test.js] [31m [suman] [39mdespite the error, suman will continue optimistically. 
+[one.test.js] [31m [suman] [39m'<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
+[one.test.js] [31m [suman] [39mdespite the missing dependency, Suman will continue optimistically. 
+[two.test.js] [31m [suman] [39m'<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
+[two.test.js] [31m [suman] [39mdespite the missing dependency, Suman will continue optimistically. 
+[one.test.js] [33m [suman] [39m
 [one.test.js] client connected. 
+[two.test.js] [33m [suman] [39m
+[two.test.js] client connected. 
 
 ### Suman runner end ###
 

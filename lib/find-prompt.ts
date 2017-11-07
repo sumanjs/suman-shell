@@ -25,11 +25,9 @@ import {pt} from 'prepend-transform';
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
 import {log} from './logging';
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-export const makeFindPrompt = function(p: Pool, projectRoot: string) {
+export const makeFindPrompt = function (p: Pool, projectRoot: string) {
 
   return function findPrompt(object: any, dir: string, sumanOptions: string, cb: Function) {
 
@@ -102,7 +100,7 @@ export const makeFindPrompt = function(p: Pool, projectRoot: string) {
       }
     });
 
-    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '))).pipe(process.stderr);
+    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '), {omitWhitespace: true})).pipe(process.stderr);
 
     sumanOptions = sumanOptions + ' --find-only ';
 
