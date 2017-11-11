@@ -13,7 +13,7 @@ import * as cp from 'child_process';
 import * as util from 'util';
 
 //npm
-import JSON2Stdout = require('json-2-stdout');
+import JSONStdio = require('json-stdio');
 import * as residence from 'residence';
 import {Pool} from 'poolio';
 import * as chalk from 'chalk';
@@ -91,7 +91,7 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
 
     });
 
-    k.stdout.pipe(JSON2Stdout.createParser()).on(JSON2Stdout.stdEventName, function (obj: any) {
+    k.stdout.pipe(JSONStdio.createParser()).on(JSONStdio.stdEventName, function (obj: any) {
       if (obj && obj.file) {
         files.push(obj.file);
       }
