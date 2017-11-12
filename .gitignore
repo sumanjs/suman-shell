@@ -1,8 +1,11 @@
+
 ### Folders
 .idea
 node_modules
 coverage
 .nyc_output
+.vscode
+.vs_code
 
 ### matching
 *.log
