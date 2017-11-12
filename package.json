@@ -1,7 +1,7 @@
 {
   "name": "suman-shell",
   "version": "0.0.1005",
-  "description": "Suman-default - helps run suman tests quickly at the command line",
+  "description": "suman-shell - helps run suman tests quickly via the command line.",
   "main": "index.js",
   "scripts": {
     "test": "suman --default"
@@ -34,6 +34,7 @@
     "prepend-transform": "latest",
     "residence": "latest",
     "suman-browser-polyfills": "latest",
+    "suman-utils": "latest",
     "vorpal": "1.11.4"
   },
   "devDependencies": {

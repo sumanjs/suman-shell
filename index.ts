@@ -13,7 +13,6 @@ import * as cp from 'child_process';
 import * as util from 'util';
 
 //npm
-import JSON2Stdout = require('json-2-stdout');
 import * as residence from 'residence';
 import {Pool} from 'poolio';
 import * as chalk from 'chalk';
