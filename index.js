@@ -8,6 +8,7 @@ var poolio_1 = require("poolio");
 var chalk = require("chalk");
 var fs = require("fs");
 var Vorpal = require("vorpal");
+var fsAutocomplete = require('vorpal-autocomplete-fs');
 var _ = require("lodash");
 var _suman = global.__suman = (global.__suman || {});
 var logging_1 = require("./lib/logging");
@@ -70,24 +71,24 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         p.killAllActiveWorkers();
     });
     var vorpal = new Vorpal();
+    vorpal.command('pwd')
+        .description('echo present working directory')
+        .action(function (args, cb) {
+        console.log(process.cwd());
+        cb(null);
+    });
     vorpal.command('run [file]')
         .description('run a single test script')
-        .autocomplete({
-        data: function (input, cb) {
-            var basename = path.basename(input);
-            var dir = path.dirname(path.resolve(process.cwd() + ("/" + input)));
-            fs.readdir(dir, function (err, items) {
-                if (err) {
-                    return cb(null);
-                }
-                var matches = items.filter(function (item) {
-                    return String(item).match(basename);
-                });
-                return cb(matches);
-            });
-        }
-    })
+        .autocomplete(fsAutocomplete())
         .action(function (args, cb) {
+        console.log('args: ', args);
+        if (!args) {
+            logging_1.log.error('Implementation error: no args object available. Returning early.');
+            return cb(null);
+        }
+        if (!args.file) {
+            logging_1.log.error('no file/files chosen, please select a file path.');
+        }
         var testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + ("/" + args.file));
         try {
             fs.statSync(testFilePath);
@@ -108,7 +109,6 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         logging_1.log.warning('find command was canceled.');
     })
         .action(function (args, cb) {
-        logging_1.log.info('args => ', args);
         var dir;
         if (args && typeof args.folder === 'string') {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
@@ -117,7 +117,6 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             dir = path.resolve(projectRoot + '/test');
         }
         var sumanOptions = _.flattenDeep([args.opts || []]);
-        logging_1.log.info('suman options => ', sumanOptions);
         sumanOptions = sumanOptions.join(' ');
         findPrompt(this, dir, sumanOptions, function (err) {
             err && logging_1.log.error(err);
@@ -125,7 +124,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         });
     });
     vorpal
-        .delimiter(shortCWD + chalk.magenta(' // suman>'))
+        .delimiter(shortCWD + chalk.black.bold(' // suman>'))
         .show();
     var to = setTimeout(function () {
         logging_1.log.error('No stdin was received after 25 seconds...closing...');

@@ -7,6 +7,9 @@
     "/node_modules/",
     "/.git/"
   ],
+  "comments": [
+
+  ],
   "list": [
     "poolio",
     "json-stdio",

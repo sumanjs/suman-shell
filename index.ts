@@ -19,6 +19,7 @@ import * as chalk from 'chalk';
 import * as fs from 'fs';
 import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
+const fsAutocomplete = require('vorpal-autocomplete-fs');
 import {pt} from 'prepend-transform';
 import _ = require('lodash');
 
@@ -113,28 +114,47 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
   const vorpal = new Vorpal();
 
-  vorpal.command('run [file]')
+  vorpal.command('pwd')
+  .description('echo present working directory')
+  .action(function(args: Array<string>,cb: Function){
+     console.log(process.cwd());
+     cb(null);
+  });
+
+  vorpal.command('run [file]')  //vorpal.command('run [files...]')
   .description('run a single test script')
-  .autocomplete({
-    data: function (input: string, cb: Function) {
+  .autocomplete(fsAutocomplete())
+  // .autocomplete({
+  //   data: function (input: string, cb: Function) {
+  //
+  //     const basename = path.basename(input);
+  //     const dir = path.dirname(path.resolve(process.cwd() + `/${input}`));
+  //
+  //     fs.readdir(dir, function (err, items) {
+  //       if (err) {
+  //         return cb(null);
+  //       }
+  //       const matches = items.filter(function (item) {
+  //         return String(item).match(basename);
+  //       });
+  //
+  //       return cb(matches);
+  //
+  //     });
+  //   }
+  // })
+  .action(function (args: any, cb: Function) {
 
-      const basename = path.basename(input);
-      const dir = path.dirname(path.resolve(process.cwd() + `/${input}`));
+    console.log('args: ', args);
 
-      fs.readdir(dir, function (err, items) {
-        if (err) {
-          return cb(null);
-        }
-        const matches = items.filter(function (item) {
-          return String(item).match(basename);
-        });
-
-        return cb(matches);
-
-      });
+    if(!args){
+      log.error('Implementation error: no args object available. Returning early.');
+      return cb(null);
     }
-  })
-  .action(function (args: Array<string>, cb: Function) {
+
+    if(!args.file){
+      log.error('no file/files chosen, please select a file path.');
+    }
 
     let testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + `/${args.file}`);
 
@@ -162,7 +182,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   })
   .action(function (args: Array<string>, cb: Function) {
 
-    log.info('args => ', args);
+    // log.info('args => ', args);
 
     let dir;
 
@@ -175,7 +195,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
     let sumanOptions = _.flattenDeep([args.opts || []]);
 
-    log.info('suman options => ', sumanOptions);
+    // log.info('suman options => ', sumanOptions);
 
     sumanOptions = sumanOptions.join(' ');
 
@@ -186,7 +206,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   });
 
   vorpal
-  .delimiter(shortCWD + chalk.magenta(' // suman>'))
+  .delimiter(shortCWD + chalk.black.bold(' // suman>'))
   .show();
 
   const to = setTimeout(function () {

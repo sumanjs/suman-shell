@@ -98,8 +98,6 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
 
     k.stdout.pipe(parser).on(JSONStdio.stdEventName, function (obj: any) {
 
-      console.log('parsed => ', obj);
-
       if (obj && obj.file) {
         files.push(obj.file);
       }

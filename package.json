@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sumanjs/suman-d.git"
+    "url": "git+https://github.com/sumanjs/suman-shell.git"
   },
   "keywords": [
     "suman",
@@ -23,9 +23,9 @@
   "author": "Olegzandr VD",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sumanjs/suman-d/issues"
+    "url": "https://github.com/sumanjs/suman-shell/issues"
   },
-  "homepage": "https://github.com/sumanjs/suman-d#readme",
+  "homepage": "https://github.com/sumanjs/suman-shell#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "json-stdio": "latest",
@@ -35,7 +35,8 @@
     "residence": "latest",
     "suman-browser-polyfills": "latest",
     "suman-utils": "latest",
-    "vorpal": "1.11.4"
+    "vorpal": "1.11.4",
+    "vorpal-autocomplete-fs": "0.0.3"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
