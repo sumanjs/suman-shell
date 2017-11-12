@@ -2,8 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "baseUrl": ".",
-    "types": [
-      "node"
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/suman-types/dts"
     ],
     "target": "es5",
     "module": "commonjs",

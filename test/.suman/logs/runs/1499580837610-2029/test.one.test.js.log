@@ -1,6 +1,0 @@
-[31m => [suman] => [39m warning => suman cannot require dependency with name => "data"; Suman will continue optimistically.
-
-
-t.js
-
- => This is the end of the test.

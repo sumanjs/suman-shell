@@ -1,4 +1,16 @@
+const suman = require('suman');
+const Test = suman.init(module);
 
+const Promise = require('bluebird');
 
-console.log('this is suman log.');
-console.error('this is suman error.');
+Test.create('firm', function (it) {
+
+  5..times(function () {
+
+    it('is cool', t => {
+      return Promise.delay(10);
+    });
+
+  });
+
+});

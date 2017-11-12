@@ -2,6 +2,7 @@
 ### folders
 node_modules
 .idea
+scripts
 test
 
 ### matching
@@ -15,9 +16,10 @@ test
 *.DS_Store
 
 ### files
+.editorconfig
+suman.conf.js
 .npmignore
 .gitignore
-package-lock.json
 yarn.lock
 
 ### negation

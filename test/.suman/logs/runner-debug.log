@@ -1,1 +1,39 @@
-Suman recommends that you tail the files in this directory when you're developing tests => most useful thing to do is to tail the runner-debug.log when running tests with the Suman runner,this is because accessing the individual test errors is less transparent due to the nature of child-processes/subprocesses)
+
+
+### Suman runner start ###
+
+Beginning of run at 1509956081263 = [Mon Nov 06 2017 00:14:41 GMT-0800 (PST)]
+Suman command issued from the following directory "/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell"
+Suman "process.argv" => 
+[ '/Users/alexamil/.nvm/versions/node/v6.10.2/bin/node',
+  '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-daemon/lib/suman-fast-script.js',
+  '--match-any=3',
+  '--match-any=test',
+  '--force-inception-level-zero' ]
+
+[one.test.js] [31m [suman] [39m
+[one.test.js] window is not defined 
+[two.test.js] [31m [suman] [39m
+[two.test.js] window is not defined 
+
+
+[one.test.js] [33m [suman @tap-json-reporter] [39m "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
+
+[two.test.js] [33m [suman @tap-json-reporter] [39m "tap-json-reporter" warning: suman inception level is 0, we may not need to load this reporter.
+[one.test.js] [31m [suman] [39m
+[one.test.js] Cannot find module '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell/test/.suman/suman.ioc.static.js' 
+[one.test.js] [31m [suman] [39mdespite the error, suman will continue optimistically. 
+[two.test.js] [31m [suman] [39m
+[two.test.js] Cannot find module '/Users/alexamil/WebstormProjects/oresoftware/sumanjs/suman-shell/test/.suman/suman.ioc.static.js' 
+[two.test.js] [31m [suman] [39mdespite the error, suman will continue optimistically. 
+[one.test.js] [31m [suman] [39m'<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
+[one.test.js] [31m [suman] [39mdespite the missing dependency, Suman will continue optimistically. 
+[two.test.js] [31m [suman] [39m'<suman.ioc.js>' warning => cannot require dependency with name => 'data'. 
+[two.test.js] [31m [suman] [39mdespite the missing dependency, Suman will continue optimistically. 
+[one.test.js] [33m [suman] [39m
+[one.test.js] client connected. 
+[two.test.js] [33m [suman] [39m
+[two.test.js] client connected. 
+
+### Suman runner end ###
+

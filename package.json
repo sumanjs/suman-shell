@@ -1,10 +1,10 @@
 {
-  "name": "suman-d",
-  "version": "0.0.1004",
+  "name": "suman-shell",
+  "version": "0.0.1005",
   "description": "Suman-default - helps run suman tests quickly at the command line",
   "main": "index.js",
   "scripts": {
-    "test": "suman"
+    "test": "suman --default"
   },
   "repository": {
     "type": "git",
@@ -21,15 +21,19 @@
     "ava"
   ],
   "author": "Olegzandr VD",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sumanjs/suman-d/issues"
   },
   "homepage": "https://github.com/sumanjs/suman-d#readme",
   "dependencies": {
     "chalk": "^1.1.3",
+    "json-stdio": "latest",
+    "lodash": "^4.17.4",
     "poolio": "latest",
+    "prepend-transform": "latest",
     "residence": "latest",
+    "suman-browser-polyfills": "latest",
     "vorpal": "1.11.4"
   },
   "devDependencies": {

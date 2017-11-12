@@ -1,13 +1,17 @@
 {
   "linkToItself": true,
   "searchRoots": [
-    "$HOME/WebstormProjects"
+    "$HOME/WebstormProjects/oresoftware"
   ],
   "ignore": [
     "/node_modules/",
     "/.git/"
   ],
   "list": [
-     "poolio"
+    "poolio",
+    "json-stdio",
+    "prepend-transform",
+    "suman-types",
+    "suman-browser-polyfills"
   ]
 }

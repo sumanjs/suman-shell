@@ -1,28 +1,33 @@
-# Suman-D
+<p>
 
-## This project uses Vorpal, and this project is dormant
-## Vorpal is in process of migrating to version 2, so let's use Vorpal later, when it's stable again
+# Suman-Shell [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-## You may be looking for the suman-daemon project instead
+<p>
 
-This project was executed like so:
+### A CLI tool for running tests faster and more conveniently
 
-```javascript
+## Usage
 
-import {startSumanD, ISubsetSumanDOptions} from 'suman-d';
+Run `$ suman` without any arguments, and it will drop you into this interactive CLI tool.
+To avoid dropping into suman-shell (this tool), simply use
 
-export const run = function (projectRoot: string, sumanLibRoot: string, opts: ISubsetSumanDOptions) {
+<br>
 
-  const fn = startSumanD(projectRoot, sumanLibRoot, opts || {});
+`$ suman --`  or `$ suman --default`
 
-};
+<br>
+
+These commands will run `suman` agains the default test configuration given by `suman.conf.js` in your project.
+
+<br>
+If no input is received after 25 seconds, suman-shell will automatically be exited, returning you to your prior
+terminal session.
 
 
-```
+## What it do
 
+Suman-Shell uses a process pool to run tests more quickly, primarily by pre-loading dependencies from node_modules.
 
-and at the CLI
+1. The `run` command option will execute tests, given a relative or absolute path to a test script.
 
-```javascript
- NODE_PATH=${NEW_NODE_PATH} PATH=${NEW_PATH} SUMAN_EXTRANEOUS_EXECUTABLE=yes node "${X}/cli.js" --suman-d $@
-```
+2. The `find` command option will give you a list of runnable test scripts in your project, and you can use the drop down menu to pick which one you want to run.
