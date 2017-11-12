@@ -81,20 +81,25 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         .description('run a single test script')
         .autocomplete(fsAutocomplete())
         .action(function (args, cb) {
-        console.log('args: ', args);
         if (!args) {
             logging_1.log.error('Implementation error: no args object available. Returning early.');
             return cb(null);
         }
         if (!args.file) {
             logging_1.log.error('no file/files chosen, please select a file path.');
+            return cb(null);
         }
         var testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + ("/" + args.file));
         try {
-            fs.statSync(testFilePath);
+            var stats = fs.statSync(testFilePath);
+            if (!stats.isFile()) {
+                logging_1.log.warning('please pass a suman test file, not a directory or symlink.');
+                return cb(null);
+            }
         }
         catch (err) {
-            return cb(err.message);
+            logging_1.log.error(err.message);
+            return cb(null);
         }
         var begin = Date.now();
         p.anyCB({ testFilePath: testFilePath }, function (err, result) {
@@ -114,6 +119,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
         }
         else {
+            logging_1.log.warning('using /test directory as default since no folder was passed as an argument.');
             dir = path.resolve(projectRoot + '/test');
         }
         var sumanOptions = _.flattenDeep([args.opts || []]);

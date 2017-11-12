@@ -5,12 +5,14 @@ const Promise = require('bluebird');
 
 Test.create('firm', function (it) {
 
-  5..times(function () {
+  6..times(function () {
 
     it('is cool', t => {
       return Promise.delay(10);
     });
 
   });
+
+  it('fails', suman.autoFail);
 
 });

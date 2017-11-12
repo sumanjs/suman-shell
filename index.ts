@@ -116,9 +116,9 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
 
   vorpal.command('pwd')
   .description('echo present working directory')
-  .action(function(args: Array<string>,cb: Function){
-     console.log(process.cwd());
-     cb(null);
+  .action(function (args: Array<string>, cb: Function) {
+    console.log(process.cwd());
+    cb(null);
   });
 
   vorpal.command('run [file]')  //vorpal.command('run [files...]')
@@ -145,24 +145,30 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   // })
   .action(function (args: any, cb: Function) {
 
-    console.log('args: ', args);
+    // console.log('args: ', args);
 
-    if(!args){
+    if (!args) {
       log.error('Implementation error: no args object available. Returning early.');
       return cb(null);
     }
 
-    if(!args.file){
+    if (!args.file) {
       log.error('no file/files chosen, please select a file path.');
+      return cb(null);
     }
 
     let testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + `/${args.file}`);
 
     try {
-      fs.statSync(testFilePath)
+      let stats = fs.statSync(testFilePath);
+      if (!stats.isFile()) {
+        log.warning('please pass a suman test file, not a directory or symlink.');
+        return cb(null);
+      }
     }
     catch (err) {
-      return cb(err.message);
+      log.error(err.message);
+      return cb(null);
     }
 
     const begin = Date.now();
@@ -190,6 +196,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
       dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
     }
     else {
+      log.warning('using /test directory as default since no folder was passed as an argument.');
       dir = path.resolve(projectRoot + '/test');
     }
 
