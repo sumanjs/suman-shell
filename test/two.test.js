@@ -1,6 +1,5 @@
 const suman = require('suman');
 const Test = suman.init(module);
-
 const Promise = require('bluebird');
 
 Test.create('firm', function (it) {
@@ -12,7 +11,5 @@ Test.create('firm', function (it) {
     });
 
   });
-
-  it('fails', suman.autoFail);
 
 });
