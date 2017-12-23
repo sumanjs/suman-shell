@@ -27,6 +27,7 @@ module.exports = {
   browser: 'Firefox',                 // browser to open test results with
 
   //boolean
+  viewGantt: true,
   autoLoggingPre: true,
   autoLoggingPost: true,
   autoLoggingIoc: true,

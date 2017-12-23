@@ -12,6 +12,8 @@ var fsAutocomplete = require('vorpal-autocomplete-fs');
 var _ = require("lodash");
 var _suman = global.__suman = (global.__suman || {});
 var logging_1 = require("./lib/logging");
+var execute_shell_cmd_1 = require("./lib/execute-shell-cmd");
+var run_files_1 = require("./lib/run-files");
 var find_prompt_1 = require("./lib/find-prompt");
 var sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
 try {
@@ -77,36 +79,19 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         console.log(process.cwd());
         cb(null);
     });
+    vorpal.command('bash [commands...]')
+        .allowUnknownOptions()
+        .action(execute_shell_cmd_1.makeExecute('bash', projectRoot));
+    vorpal.command('zsh [commands...]')
+        .allowUnknownOptions()
+        .action(execute_shell_cmd_1.makeExecute('zsh', projectRoot));
+    vorpal.command('sh [commands...]')
+        .allowUnknownOptions()
+        .action(execute_shell_cmd_1.makeExecute('sh', projectRoot));
     vorpal.command('run [file]')
         .description('run a single test script')
         .autocomplete(fsAutocomplete())
-        .action(function (args, cb) {
-        if (!args) {
-            logging_1.log.error('Implementation error: no args object available. Returning early.');
-            return cb(null);
-        }
-        if (!args.file) {
-            logging_1.log.error('no file/files chosen, please select a file path.');
-            return cb(null);
-        }
-        var testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + ("/" + args.file));
-        try {
-            var stats = fs.statSync(testFilePath);
-            if (!stats.isFile()) {
-                logging_1.log.warning('please pass a suman test file, not a directory or symlink.');
-                return cb(null);
-            }
-        }
-        catch (err) {
-            logging_1.log.error(err.message);
-            return cb(null);
-        }
-        var begin = Date.now();
-        p.anyCB({ testFilePath: testFilePath }, function (err, result) {
-            logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
-            cb(null);
-        });
-    });
+        .action(run_files_1.makeRunFiles(p, projectRoot));
     vorpal.command('find')
         .description('find test files to run')
         .option('--opts <sumanOpts>', 'Search for test scripts in subdirectories.')

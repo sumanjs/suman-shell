@@ -21,11 +21,13 @@ import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
 const fsAutocomplete = require('vorpal-autocomplete-fs');
 import {pt} from 'prepend-transform';
-import _ = require('lodash');
+import * as _ from 'lodash';
 
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
 import {log} from './lib/logging';
+import {makeExecute} from "./lib/execute-shell-cmd";
+import {makeRunFiles} from "./lib/run-files";
 import {makeFindPrompt} from "./lib/find-prompt";
 const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
 
@@ -120,64 +122,23 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     console.log(process.cwd());
     cb(null);
   });
+  
+  vorpal.command('bash [commands...]')
+  .allowUnknownOptions()
+  .action(makeExecute('bash', projectRoot));
+  
+  vorpal.command('zsh [commands...]')
+  .allowUnknownOptions()
+  .action(makeExecute('zsh', projectRoot));
+  
+  vorpal.command('sh [commands...]')
+  .allowUnknownOptions()
+  .action(makeExecute('sh', projectRoot));
 
   vorpal.command('run [file]')  //vorpal.command('run [files...]')
   .description('run a single test script')
   .autocomplete(fsAutocomplete())
-  // .autocomplete({
-  //   data: function (input: string, cb: Function) {
-  //
-  //     const basename = path.basename(input);
-  //     const dir = path.dirname(path.resolve(process.cwd() + `/${input}`));
-  //
-  //     fs.readdir(dir, function (err, items) {
-  //       if (err) {
-  //         return cb(null);
-  //       }
-  //       const matches = items.filter(function (item) {
-  //         return String(item).match(basename);
-  //       });
-  //
-  //       return cb(matches);
-  //
-  //     });
-  //   }
-  // })
-  .action(function (args: any, cb: Function) {
-
-    // console.log('args: ', args);
-
-    if (!args) {
-      log.error('Implementation error: no args object available. Returning early.');
-      return cb(null);
-    }
-
-    if (!args.file) {
-      log.error('no file/files chosen, please select a file path.');
-      return cb(null);
-    }
-
-    let testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + `/${args.file}`);
-
-    try {
-      let stats = fs.statSync(testFilePath);
-      if (!stats.isFile()) {
-        log.warning('please pass a suman test file, not a directory or symlink.');
-        return cb(null);
-      }
-    }
-    catch (err) {
-      log.error(err.message);
-      return cb(null);
-    }
-
-    const begin = Date.now();
-
-    p.anyCB({testFilePath}, function (err: Error, result: any) {
-      log.veryGood('total time millis => ', Date.now() - begin, '\n');
-      cb(null);
-    });
-  });
+  .action(makeRunFiles(p, projectRoot));
 
   vorpal.command('find')
   .description('find test files to run')
