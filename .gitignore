@@ -1,5 +1,4 @@
-
-### Folders
+### folders
 .idea
 node_modules
 coverage
@@ -9,6 +8,7 @@ coverage
 
 ### matching
 *.log
+*.html
 
 ### files
 package-lock.json

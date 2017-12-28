@@ -190,7 +190,7 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   process.stdin
   .setEncoding('utf8')
   .resume()
-  .on('data', function customOnData(data: string) {
+  .on('data', function (data: string) {
     clearTimeout(to);
   });
 
