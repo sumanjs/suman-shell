@@ -79,15 +79,6 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         console.log(process.cwd());
         cb(null);
     });
-    vorpal.command('bash [commands...]')
-        .allowUnknownOptions()
-        .action(execute_shell_cmd_1.makeExecute('bash', projectRoot));
-    vorpal.command('zsh [commands...]')
-        .allowUnknownOptions()
-        .action(execute_shell_cmd_1.makeExecute('zsh', projectRoot));
-    vorpal.command('sh [commands...]')
-        .allowUnknownOptions()
-        .action(execute_shell_cmd_1.makeExecute('sh', projectRoot));
     vorpal.command('run [file]')
         .description('run a single test script')
         .autocomplete(fsAutocomplete())
@@ -115,6 +106,29 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         });
     });
     vorpal
+        .mode('bash')
+        .delimiter('bash:')
+        .init(function (args, callback) {
+        this.log('Welcome to bash mode.\nYou can now directly enter arbitrary bash commands. To exit, type `exit`.');
+        callback();
+    })
+        .action(execute_shell_cmd_1.makeExecuteCommand('bash', projectRoot));
+    try {
+        if (String(cp.execSync('command -v zsh')).trim().length > 0) {
+            vorpal
+                .mode('zsh')
+                .delimiter('zsh:')
+                .init(function (args, callback) {
+                this.log('Welcome to zsh mode.\nYou can now directly enter arbitrary zsh commands. To exit, type `exit`.');
+                callback();
+            })
+                .action(execute_shell_cmd_1.makeExecuteCommand('zsh', projectRoot));
+        }
+    }
+    catch (err) {
+        logging_1.log.error(err);
+    }
+    vorpal
         .delimiter(shortCWD + chalk.black.bold(' // suman>'))
         .show();
     var to = setTimeout(function () {
@@ -127,7 +141,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     process.stdin
         .setEncoding('utf8')
         .resume()
-        .on('data', function customOnData(data) {
+        .on('data', function (data) {
         clearTimeout(to);
     });
     return function cleanUpSumanShell() {

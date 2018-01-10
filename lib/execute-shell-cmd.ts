@@ -9,19 +9,59 @@ export const makeExecute = function (exec: string, projectRoot: string) {
   
   return function (args: IOptions, cb: Function) {
     
-    if (!args.commands) {
-      log.error('no commands issued.');
-      return process.nextTick(cb);
+    try {
+      if (!args.commands) {
+        log.error('no commands issued.');
+        return process.nextTick(cb);
+      }
+      
+      const k = cp.spawn(exec);
+      
+      k.once('error', cb as any);
+      
+      k.stdout.pipe(process.stdout);
+      k.stderr.pipe(process.stderr);
+      
+      k.stdin.write(args.commands.join(' '));
+      k.stdin.end('\n');
+      
+      k.once('exit', cb as any);
+    }
+    catch (err) {
+      log.error(err);
+      cb(null);
     }
     
-    const k = cp.spawn(exec);
-    k.stdout.pipe(process.stdout);
-    k.stderr.pipe(process.stderr);
+  }
+};
+
+export const makeExecuteCommand = function (exec: string, projectRoot: string) {
+  
+  return function (command: string, cb: Function) {
     
-    k.stdin.write(args.commands.join(' '));
-    k.stdin.end('\n');
-    
-    k.once('exit', cb as any);
+    try {
+      
+      if (command.length < 1) {
+        log.error('no command issued.');
+        return process.nextTick(cb);
+      }
+      
+      const k = cp.spawn(exec);
+      
+      k.once('error', cb as any);
+      
+      k.stdout.pipe(process.stdout);
+      k.stderr.pipe(process.stderr);
+      
+      k.stdin.write(command);
+      k.stdin.end('\n');
+      
+      k.once('exit', cb as any);
+    }
+    catch (err) {
+      log.error(err);
+      cb(null);
+    }
     
   }
   

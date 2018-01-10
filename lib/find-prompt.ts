@@ -106,7 +106,7 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
       }
     });
 
-    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '), {omitWhitespace: true})).pipe(process.stderr);
+    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" stderr] '), {omitWhitespace: true})).pipe(process.stderr);
 
     sumanOptions = sumanOptions + ' --find-only ';
 

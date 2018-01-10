@@ -7,7 +7,11 @@ Test.create('firm', function (it) {
   6..times(function () {
 
     it('is cool', t => {
-      return Promise.delay(10);
+
+      return Promise.delay(10).then(function () {
+
+      });
+
     });
 
   });
