@@ -26,36 +26,17 @@ import * as _ from 'lodash';
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
 import {log} from './lib/logging';
-import {makeExecute, makeExecuteCommand} from "./lib/execute-shell-cmd";
+import {makeExecute, makeExecuteCommand, makeExecuteBash} from "./lib/execute-shell-cmd";
 import {makeRunFiles} from "./lib/run-files";
 import {makeFindPrompt} from "./lib/find-prompt";
-const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
+import {executables} from "./lib/check-for-executables";
+import {loadInquirer} from "./lib/load-inquirer";
 
-try {
-  require.resolve('inquirer');
-}
-catch (err) {
-  log.warning('loading suman-shell...please wait.');
-  try {
-    cp.execSync(`cd ${sumanGlobalModulesPath} && npm install inquirer`);
-  }
-  catch (err) {
-    log.error('suman-shell could not be loaded; suman-shell cannot load the "inquirer" dependency.');
-    log.error(err.stack || err);
-    process.exit(1);
-  }
-  
-}
-
-try {
-  require('inquirer');
-}
-catch (err) {
-  log.warning('you may be missing necessary dependences for the suman-shell CLI.');
-  log.warning(err.message);
-}
 
 //////////////////////////////////////////////////////////////////
+
+// we need inquirer for searching for tests
+loadInquirer();
 
 let getSharedWritableStream = function () {
   return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
@@ -116,40 +97,19 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
   
   const vorpal = new Vorpal();
   
-  vorpal.command('pwd')
-  .description('echo present working directory')
-  .action(function (args: Array<string>, cb: Function) {
-    console.log(process.cwd());
-    cb(null);
-  });
-  
-  // vorpal.command('bash [commands...]')
-  // .allowUnknownOptions()
-  // .action(makeExecute('bash', projectRoot));
-  
-  // vorpal.command('zsh [commands...]')
-  // .allowUnknownOptions()
-  // .action(makeExecute('zsh', projectRoot));
-  //
-  // vorpal.command('sh [commands...]')
-  // .allowUnknownOptions()
-  // .action(makeExecute('sh', projectRoot));
-  
   vorpal.command('run [file]')  //vorpal.command('run [files...]')
   .description('run a single test script')
   .autocomplete(fsAutocomplete())
   .action(makeRunFiles(p, projectRoot));
   
-  vorpal.command('find')
+  vorpal.command('search [a]')
   .description('find test files to run')
   .option('--opts <sumanOpts>', 'Search for test scripts in subdirectories.')
   // .option('--match-none <matchNone>', 'Size of pizza.')
   .cancel(function () {
-    log.warning('find command was canceled.');
+    log.warning(chalk.red('search command was canceled.'));
   })
   .action(function (args: Array<string>, cb: Function) {
-    
-    // log.info('args => ', args);
     
     let dir;
     
@@ -173,36 +133,48 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     });
   });
   
-  vorpal
-  .mode('bash')
-  .delimiter('bash:')
-  .init(function (args: Array<string>, callback: Function) {
-    this.log('Welcome to bash mode.\nYou can now directly enter arbitrary bash commands. To exit, type `exit`.');
-    callback();
-  })
-  .action(
-    makeExecuteCommand('bash', projectRoot)
-  );
   
-  try{
-    if(String(cp.execSync('command -v zsh')).trim().length > 0){
-      vorpal
-      .mode('zsh')
-      .delimiter('zsh:')
-      .init(function (args: Array<string>, callback: Function) {
-        this.log('Welcome to zsh mode.\nYou can now directly enter arbitrary zsh commands. To exit, type `exit`.');
-        callback();
-      })
-      .action(
-        makeExecuteCommand('zsh', projectRoot)
-      );
-    }
+  if(executables.bash){
+    vorpal
+    .mode('bash')
+    .delimiter('bash:')
+    .init(function (args: Array<string>, callback: Function) {
+      this.log('Welcome to bash mode.\nYou can now directly enter arbitrary bash commands. To exit, type `exit`.');
+      callback();
+    })
+    .action(
+      makeExecuteCommand('bash', projectRoot)
+    );
   }
-  catch(err){
-    log.error(err);
+  else{
+    log.warning('Suman-Shell could not locate a bash executable using `command`.')
   }
- 
- 
+  
+  
+  if(executables.zsh){
+    vorpal
+    .mode('zsh')
+    .delimiter('zsh:')
+    .init(function (args: Array<string>, callback: Function) {
+      this.log('Welcome to zsh mode.\nYou can now directly enter arbitrary zsh commands. To exit, type `exit`.');
+      callback();
+    })
+    .action(
+      makeExecuteCommand('zsh', projectRoot)
+    );
+  }
+  else{
+    log.warning('Suman-Shell could not locate a zsh executable using `command`.')
+  }
+  
+  
+  
+  vorpal
+  .catch('[cmd]', 'Catches unrecognized commands')
+  .allowUnknownOptions()
+  .action(
+    makeExecuteBash(projectRoot)
+  );
   
   vorpal
   .delimiter(shortCWD + chalk.black.bold(' // suman>'))

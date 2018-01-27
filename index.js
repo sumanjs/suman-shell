@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var process = require('suman-browser-polyfills/modules/process');
 var global = require('suman-browser-polyfills/modules/global');
 var path = require("path");
-var cp = require("child_process");
 var poolio_1 = require("poolio");
 var chalk = require("chalk");
 var fs = require("fs");
@@ -15,28 +14,9 @@ var logging_1 = require("./lib/logging");
 var execute_shell_cmd_1 = require("./lib/execute-shell-cmd");
 var run_files_1 = require("./lib/run-files");
 var find_prompt_1 = require("./lib/find-prompt");
-var sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
-try {
-    require.resolve('inquirer');
-}
-catch (err) {
-    logging_1.log.warning('loading suman-shell...please wait.');
-    try {
-        cp.execSync("cd " + sumanGlobalModulesPath + " && npm install inquirer");
-    }
-    catch (err) {
-        logging_1.log.error('suman-shell could not be loaded; suman-shell cannot load the "inquirer" dependency.');
-        logging_1.log.error(err.stack || err);
-        process.exit(1);
-    }
-}
-try {
-    require('inquirer');
-}
-catch (err) {
-    logging_1.log.warning('you may be missing necessary dependences for the suman-shell CLI.');
-    logging_1.log.warning(err.message);
-}
+var check_for_executables_1 = require("./lib/check-for-executables");
+var load_inquirer_1 = require("./lib/load-inquirer");
+load_inquirer_1.loadInquirer();
 var getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
@@ -73,21 +53,15 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         p.killAllActiveWorkers();
     });
     var vorpal = new Vorpal();
-    vorpal.command('pwd')
-        .description('echo present working directory')
-        .action(function (args, cb) {
-        console.log(process.cwd());
-        cb(null);
-    });
     vorpal.command('run [file]')
         .description('run a single test script')
         .autocomplete(fsAutocomplete())
         .action(run_files_1.makeRunFiles(p, projectRoot));
-    vorpal.command('find')
+    vorpal.command('search [a]')
         .description('find test files to run')
         .option('--opts <sumanOpts>', 'Search for test scripts in subdirectories.')
         .cancel(function () {
-        logging_1.log.warning('find command was canceled.');
+        logging_1.log.warning(chalk.red('search command was canceled.'));
     })
         .action(function (args, cb) {
         var dir;
@@ -105,29 +79,36 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             cb(null);
         });
     });
+    if (check_for_executables_1.executables.bash) {
+        vorpal
+            .mode('bash')
+            .delimiter('bash:')
+            .init(function (args, callback) {
+            this.log('Welcome to bash mode.\nYou can now directly enter arbitrary bash commands. To exit, type `exit`.');
+            callback();
+        })
+            .action(execute_shell_cmd_1.makeExecuteCommand('bash', projectRoot));
+    }
+    else {
+        logging_1.log.warning('Suman-Shell could not locate a bash executable using `command`.');
+    }
+    if (check_for_executables_1.executables.zsh) {
+        vorpal
+            .mode('zsh')
+            .delimiter('zsh:')
+            .init(function (args, callback) {
+            this.log('Welcome to zsh mode.\nYou can now directly enter arbitrary zsh commands. To exit, type `exit`.');
+            callback();
+        })
+            .action(execute_shell_cmd_1.makeExecuteCommand('zsh', projectRoot));
+    }
+    else {
+        logging_1.log.warning('Suman-Shell could not locate a zsh executable using `command`.');
+    }
     vorpal
-        .mode('bash')
-        .delimiter('bash:')
-        .init(function (args, callback) {
-        this.log('Welcome to bash mode.\nYou can now directly enter arbitrary bash commands. To exit, type `exit`.');
-        callback();
-    })
-        .action(execute_shell_cmd_1.makeExecuteCommand('bash', projectRoot));
-    try {
-        if (String(cp.execSync('command -v zsh')).trim().length > 0) {
-            vorpal
-                .mode('zsh')
-                .delimiter('zsh:')
-                .init(function (args, callback) {
-                this.log('Welcome to zsh mode.\nYou can now directly enter arbitrary zsh commands. To exit, type `exit`.');
-                callback();
-            })
-                .action(execute_shell_cmd_1.makeExecuteCommand('zsh', projectRoot));
-        }
-    }
-    catch (err) {
-        logging_1.log.error(err);
-    }
+        .catch('[cmd]', 'Catches unrecognized commands')
+        .allowUnknownOptions()
+        .action(execute_shell_cmd_1.makeExecuteBash(projectRoot));
     vorpal
         .delimiter(shortCWD + chalk.black.bold(' // suman>'))
         .show();
