@@ -167,8 +167,6 @@ export const startSumanShell = function (projectRoot: string, sumanLibRoot: stri
     log.warning('Suman-Shell could not locate a zsh executable using `command`.')
   }
   
-  
-  
   vorpal
   .catch('[cmd]', 'Catches unrecognized commands')
   .allowUnknownOptions()

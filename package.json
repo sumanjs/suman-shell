@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
+    "@types/lodash": "^4.14.97",
     "@types/node": "^8.0.1",
     "bluebird": "^3.5.0"
   }
