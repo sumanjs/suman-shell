@@ -1,11 +1,14 @@
-### Folders
+### folders
 .idea
 node_modules
 coverage
 .nyc_output
+.vscode
+.vs_code
 
 ### matching
 *.log
+*.html
 
 ### files
 package-lock.json

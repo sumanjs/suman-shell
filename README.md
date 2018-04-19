@@ -31,3 +31,5 @@ Suman-Shell uses a process pool to run tests more quickly, primarily by pre-load
 1. The `run` command option will execute tests, given a relative or absolute path to a test script.
 
 2. The `find` command option will give you a list of runnable test scripts in your project, and you can use the drop down menu to pick which one you want to run.
+
+3. Execute bash, zsh, sh scripts, using `suman> bash "ls -a"` or `suman>zsh "x y z"`

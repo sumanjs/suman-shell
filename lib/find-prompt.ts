@@ -20,6 +20,7 @@ import * as chalk from 'chalk';
 import * as fs from 'fs';
 import {Writable} from 'stream';
 import {pt} from 'prepend-transform';
+import su = require('suman-utils');
 
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
@@ -36,7 +37,6 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
       let cancelOption = '(cancel - do not run a test)';
 
       files.unshift(cancelOption);
-
       log.newLine(); // log a new line to the console
 
       object.prompt([
@@ -91,7 +91,13 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
 
     });
 
-    k.stdout.pipe(JSONStdio.createParser()).on(JSONStdio.stdEventName, function (obj: any) {
+    // let parser = JSONStdio.createParser('@suman-shell-json-stdio');
+    let parser = JSONStdio.createParser(su.constants.JSON_STDIO_SUMAN_SHELL);
+    // let parser = JSONStdio.createParser();
+
+
+    k.stdout.pipe(parser).on(JSONStdio.stdEventName, function (obj: any) {
+
       if (obj && obj.file) {
         files.push(obj.file);
       }
@@ -100,7 +106,7 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
       }
     });
 
-    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" process stderr] '), {omitWhitespace: true})).pipe(process.stderr);
+    k.stderr.pipe(pt(chalk.yellow(' [suman "--find-only" stderr] '), {omitWhitespace: true})).pipe(process.stderr);
 
     sumanOptions = sumanOptions + ' --find-only ';
 
