@@ -25,12 +25,12 @@ import * as _ from 'lodash';
 
 //project
 const _suman: IGlobalSumanObj = global.__suman = (global.__suman || {});
-import {log} from './lib/logging';
-import {makeExecute, makeExecuteCommand, makeExecuteBash} from "./lib/execute-shell-cmd";
-import {makeRunFiles} from "./lib/run-files";
-import {makeFindPrompt} from "./lib/find-prompt";
-import {executables} from "./lib/check-for-executables";
-import {loadInquirer} from "./lib/load-inquirer";
+import {log} from './logging';
+import {makeExecute, makeExecuteCommand, makeExecuteBash} from "./execute-shell-cmd";
+import {makeRunFiles} from "./run-files";
+import {makeFindPrompt} from "./find-prompt";
+import {executables} from "./check-for-executables";
+import {loadInquirer} from "./load-inquirer";
 
 
 //////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ export interface ISumanDOptions {
 }
 
 export type ISubsetSumanDOptions = Partial<ISumanDOptions>;
-const filePath = path.resolve(__dirname + '/lib/worker.js');
+const filePath = path.resolve(__dirname + '/worker.js');
 
 const defaultPoolioOptions = {
   size: 3,

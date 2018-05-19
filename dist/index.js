@@ -1,29 +1,29 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-var process = require('suman-browser-polyfills/modules/process');
-var global = require('suman-browser-polyfills/modules/global');
-var path = require("path");
-var poolio_1 = require("poolio");
-var chalk = require("chalk");
-var fs = require("fs");
-var Vorpal = require("vorpal");
-var fsAutocomplete = require('vorpal-autocomplete-fs');
-var _ = require("lodash");
-var _suman = global.__suman = (global.__suman || {});
-var logging_1 = require("./lib/logging");
-var execute_shell_cmd_1 = require("./lib/execute-shell-cmd");
-var run_files_1 = require("./lib/run-files");
-var find_prompt_1 = require("./lib/find-prompt");
-var check_for_executables_1 = require("./lib/check-for-executables");
-var load_inquirer_1 = require("./lib/load-inquirer");
+const process = require('suman-browser-polyfills/modules/process');
+const global = require('suman-browser-polyfills/modules/global');
+const path = require("path");
+const poolio_1 = require("poolio");
+const chalk = require("chalk");
+const fs = require("fs");
+const Vorpal = require("vorpal");
+const fsAutocomplete = require('vorpal-autocomplete-fs');
+const _ = require("lodash");
+const _suman = global.__suman = (global.__suman || {});
+const logging_1 = require("./logging");
+const execute_shell_cmd_1 = require("./execute-shell-cmd");
+const run_files_1 = require("./run-files");
+const find_prompt_1 = require("./find-prompt");
+const check_for_executables_1 = require("./check-for-executables");
+const load_inquirer_1 = require("./load-inquirer");
 load_inquirer_1.loadInquirer();
-var getSharedWritableStream = function () {
+let getSharedWritableStream = function () {
     return fs.createWriteStream(path.resolve(__dirname + '/test.log'));
 };
-var filePath = path.resolve(__dirname + '/lib/worker.js');
-var defaultPoolioOptions = {
+const filePath = path.resolve(__dirname + '/worker.js');
+const defaultPoolioOptions = {
     size: 3,
-    getSharedWritableStream: getSharedWritableStream,
+    getSharedWritableStream,
     addWorkerOnExit: true,
     streamStdioAfterDelegation: true,
     oneTimeOnly: true,
@@ -34,25 +34,25 @@ var defaultPoolioOptions = {
 };
 exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     logging_1.log.newLine();
-    var cwd = process.cwd();
-    var shortCWD = String(cwd).split('/').slice(-3).join('/');
+    const cwd = process.cwd();
+    let shortCWD = String(cwd).split('/').slice(-3).join('/');
     if (shortCWD.length + 1 < String(cwd).length) {
         shortCWD = ' /.../' + shortCWD;
     }
     shortCWD = chalk.gray(shortCWD);
-    var p = new poolio_1.Pool(Object.assign({}, defaultPoolioOptions, opts, {
-        filePath: filePath,
+    const p = new poolio_1.Pool(Object.assign({}, defaultPoolioOptions, opts, {
+        filePath,
         env: Object.assign({}, process.env, {
             SUMAN_LIBRARY_ROOT_PATH: sumanLibRoot,
             SUMAN_PROJECT_ROOT: projectRoot,
             FORCE_COLOR: 1
         })
     }));
-    var findPrompt = find_prompt_1.makeFindPrompt(p, projectRoot);
+    const findPrompt = find_prompt_1.makeFindPrompt(p, projectRoot);
     process.once('exit', function () {
         p.killAllActiveWorkers();
     });
-    var vorpal = new Vorpal();
+    const vorpal = new Vorpal();
     vorpal.command('run [file]')
         .description('run a single test script')
         .autocomplete(fsAutocomplete())
@@ -64,7 +64,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
         logging_1.log.warning(chalk.red('search command was canceled.'));
     })
         .action(function (args, cb) {
-        var dir;
+        let dir;
         if (args && typeof args.folder === 'string') {
             dir = path.isAbsolute(args.folder) ? args.folder : path.resolve(projectRoot + '/' + args.folder);
         }
@@ -72,7 +72,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
             logging_1.log.warning('using /test directory as default since no folder was passed as an argument.');
             dir = path.resolve(projectRoot + '/test');
         }
-        var sumanOptions = _.flattenDeep([args.opts || []]);
+        let sumanOptions = _.flattenDeep([args.opts || []]);
         sumanOptions = sumanOptions.join(' ');
         findPrompt(this, dir, sumanOptions, function (err) {
             err && logging_1.log.error(err);
@@ -112,7 +112,7 @@ exports.startSumanShell = function (projectRoot, sumanLibRoot, opts) {
     vorpal
         .delimiter(shortCWD + chalk.black.bold(' // suman>'))
         .show();
-    var to = setTimeout(function () {
+    const to = setTimeout(function () {
         logging_1.log.error('No stdin was received after 25 seconds...closing...');
         p.killAllImmediately();
         setTimeout(function () {
