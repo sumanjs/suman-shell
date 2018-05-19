@@ -1,11 +1,1 @@
-declare const process: any;
-declare const global: any;
-declare const residence: any;
-declare const path: any;
-declare const util: any;
-declare const fs: any;
-declare const _suman: any;
-declare const sumanFilesToLoad: string[];
-declare const sumanIndex: string;
-declare const sumanProjectRoot: string;
-declare const pkgJSON: any;
+export {};

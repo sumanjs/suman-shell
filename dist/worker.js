@@ -1,10 +1,8 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 const process = require('suman-browser-polyfills/modules/process');
 const global = require('suman-browser-polyfills/modules/global');
-const residence = require('residence');
-const path = require('path');
-const util = require('util');
-const fs = require('fs');
+const path = require("path");
 const _suman = global.__suman = (global.__suman || {});
 const sumanFilesToLoad = [
     'lib/index.js',
@@ -22,7 +20,7 @@ process.once('SIGINT', function () {
 });
 const sumanIndex = process.env['SUMAN_LIBRARY_ROOT_PATH'];
 const sumanProjectRoot = process.env['SUMAN_PROJECT_ROOT'];
-const pkgJSON = require(path.resolve(sumanIndex + '/package.json'));
+const pkgJSON = require(path.resolve(sumanIndex + '/../package.json'));
 sumanFilesToLoad.forEach(function (dep) {
     try {
         require(path.resolve(sumanIndex + '/' + dep));

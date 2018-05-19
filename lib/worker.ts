@@ -5,10 +5,10 @@ const process = require('suman-browser-polyfills/modules/process');
 const global = require('suman-browser-polyfills/modules/global');
 
 // npm
-const residence = require('residence');
-const path = require('path');
-const util = require('util');
-const fs = require('fs');
+import residence = require('residence');
+import path = require('path');
+import util = require('util');
+import fs = require('fs');
 
 // project
 const _suman = global.__suman = (global.__suman || {});
@@ -69,7 +69,7 @@ const sumanProjectRoot = process.env['SUMAN_PROJECT_ROOT'];
 //   sumanFilesToLoad.push(`lib/acquire-dependencies/${item}`);
 // });
 
-const pkgJSON = require(path.resolve(sumanIndex + '/package.json'));
+const pkgJSON = require(path.resolve(sumanIndex + '/../package.json'));
 
 sumanFilesToLoad.forEach(function (dep) {
   try {
