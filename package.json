@@ -2,7 +2,7 @@
   "name": "suman-shell",
   "version": "0.0.1006",
   "description": "suman-shell - helps run suman tests quickly via the command line.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "suman --default"
   },

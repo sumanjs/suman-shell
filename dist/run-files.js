@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var logging_1 = require("./logging");
-var path = require("path");
-var fs = require("fs");
+const logging_1 = require("./logging");
+const path = require("path");
+const fs = require("fs");
 exports.makeRunFiles = function (p, projectRoot) {
     return function (args, cb) {
         if (!args) {
@@ -13,9 +13,9 @@ exports.makeRunFiles = function (p, projectRoot) {
             logging_1.log.error('no file/files chosen, please select a file path.');
             return cb(null);
         }
-        var testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + ("/" + args.file));
+        let testFilePath = path.isAbsolute(args.file) ? args.file : path.resolve(process.cwd() + `/${args.file}`);
         try {
-            var stats = fs.statSync(testFilePath);
+            let stats = fs.statSync(testFilePath);
             if (!stats.isFile()) {
                 logging_1.log.warning('please pass a suman test file, not a directory or symlink.');
                 return cb(null);
@@ -25,8 +25,8 @@ exports.makeRunFiles = function (p, projectRoot) {
             logging_1.log.error(err.message);
             return cb(null);
         }
-        var begin = Date.now();
-        p.anyCB({ testFilePath: testFilePath }, function (err, result) {
+        const begin = Date.now();
+        p.any({ testFilePath }, function (err, result) {
             logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
             cb(null);
         });

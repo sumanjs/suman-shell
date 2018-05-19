@@ -1,9 +1,9 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-var cp = require("child_process");
-var path = require("path");
-var logging_1 = require("./logging");
-var sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
+const cp = require("child_process");
+const path = require("path");
+const logging_1 = require("./logging");
+const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
 exports.loadInquirer = function () {
     try {
         require.resolve('inquirer');
@@ -11,7 +11,7 @@ exports.loadInquirer = function () {
     catch (err) {
         logging_1.log.warning('loading suman-shell...please wait.');
         try {
-            cp.execSync("cd " + sumanGlobalModulesPath + " && npm install inquirer");
+            cp.execSync(`cd ${sumanGlobalModulesPath} && npm install inquirer`);
         }
         catch (err) {
             logging_1.log.error('suman-shell could not be loaded; suman-shell cannot load the "inquirer" dependency.');

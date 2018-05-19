@@ -1,9 +1,9 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-var process = require('suman-browser-polyfills/modules/process');
-var global = require('suman-browser-polyfills/modules/global');
-var chalk = require("chalk");
-var name = ' [suman-shell] ';
+const process = require('suman-browser-polyfills/modules/process');
+const global = require('suman-browser-polyfills/modules/global');
+const chalk = require("chalk");
+const name = ' [suman-shell] ';
 exports.log = {
     info: console.log.bind(console, name),
     good: console.log.bind(console, chalk.cyan(name)),

@@ -1,20 +1,20 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-var process = require('suman-browser-polyfills/modules/process');
-var global = require('suman-browser-polyfills/modules/global');
-var path = require("path");
-var cp = require("child_process");
-var util = require("util");
-var JSONStdio = require("json-stdio");
-var chalk = require("chalk");
-var prepend_transform_1 = require("prepend-transform");
-var su = require("suman-utils");
-var _suman = global.__suman = (global.__suman || {});
-var logging_1 = require("./logging");
+const process = require('suman-browser-polyfills/modules/process');
+const global = require('suman-browser-polyfills/modules/global');
+const path = require("path");
+const cp = require("child_process");
+const util = require("util");
+const JSONStdio = require("json-stdio");
+const chalk = require("chalk");
+const prepend_transform_1 = require("prepend-transform");
+const su = require("suman-utils");
+const _suman = global.__suman = (global.__suman || {});
+const logging_1 = require("./logging");
 exports.makeFindPrompt = function (p, projectRoot) {
     return function findPrompt(object, dir, sumanOptions, cb) {
-        var onFindComplete = function (files) {
-            var cancelOption = '(cancel - do not run a test)';
+        const onFindComplete = function (files) {
+            let cancelOption = '(cancel - do not run a test)';
             files.unshift(cancelOption);
             logging_1.log.newLine();
             object.prompt([
@@ -34,19 +34,19 @@ exports.makeFindPrompt = function (p, projectRoot) {
                     logging_1.log.warning('canceled option selected.');
                     return process.nextTick(cb);
                 }
-                var testFilePath = path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
-                var begin = Date.now();
-                p.anyCB({ testFilePath: testFilePath }, function (err, result) {
+                const testFilePath = path.isAbsolute(result.fileToRun) ? result.fileToRun : path.resolve(projectRoot + '/' + result.fileToRun);
+                const begin = Date.now();
+                p.any({ testFilePath }, function (err) {
                     err && logging_1.log.newLine() && logging_1.log.error(err.stack || err) && logging_1.log.newLine();
                     logging_1.log.veryGood('total time millis => ', Date.now() - begin, '\n');
                     cb(null);
                 });
             });
         };
-        var k = cp.spawn('bash', [], {
+        const k = cp.spawn('bash', [], {
             cwd: projectRoot
         });
-        var files = [];
+        let files = [];
         k.once('exit', function (code, signal) {
             if (code === 0) {
                 onFindComplete(files);
@@ -56,7 +56,7 @@ exports.makeFindPrompt = function (p, projectRoot) {
                 cb(null);
             }
         });
-        var parser = JSONStdio.createParser(su.constants.JSON_STDIO_SUMAN_SHELL);
+        let parser = JSONStdio.createParser(su.constants.JSON_STDIO_SUMAN_SHELL);
         k.stdout.pipe(parser).on(JSONStdio.stdEventName, function (obj) {
             if (obj && obj.file) {
                 files.push(obj.file);
@@ -67,6 +67,6 @@ exports.makeFindPrompt = function (p, projectRoot) {
         });
         k.stderr.pipe(prepend_transform_1.pt(chalk.yellow(' [suman "--find-only" stderr] '), { omitWhitespace: true })).pipe(process.stderr);
         sumanOptions = sumanOptions + ' --find-only ';
-        k.stdin.end("\n suman " + sumanOptions + " \n");
+        k.stdin.end(`\n suman ${sumanOptions} \n`);
     };
 };

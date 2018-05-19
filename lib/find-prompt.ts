@@ -66,7 +66,7 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
 
           const begin = Date.now();
 
-          p.anyCB({testFilePath}, function (err: Error, result: any) {
+          p.any({testFilePath}, function (err: Error) {
             err && log.newLine() && log.error(err.stack || err) && log.newLine();
             log.veryGood('total time millis => ', Date.now() - begin, '\n');
             cb(null);

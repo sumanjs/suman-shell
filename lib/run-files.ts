@@ -7,8 +7,6 @@ export const makeRunFiles = function (p: Pool, projectRoot: string) {
   
   return function (args: Object, cb: Function) {
     
-    // console.log('args: ', args);
-    
     if (!args) {
       log.error('Implementation error: no args object available. Returning early.');
       return cb(null);
@@ -35,7 +33,7 @@ export const makeRunFiles = function (p: Pool, projectRoot: string) {
     
     const begin = Date.now();
     
-    p.anyCB({testFilePath}, function (err: Error, result: any) {
+    p.any({testFilePath}, function (err: Error, result: any) {
       log.veryGood('total time millis => ', Date.now() - begin, '\n');
       cb(null);
     });

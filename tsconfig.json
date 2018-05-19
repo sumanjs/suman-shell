@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
     "declaration": true,
     "baseUrl": ".",
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/suman-types/dts"
     ],
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
@@ -18,8 +19,7 @@
     ]
   },
   "compileOnSave": false,
-  "exclude": [
-    "test",
-    "node_modules"
+  "include": [
+    "lib"
   ]
 }
