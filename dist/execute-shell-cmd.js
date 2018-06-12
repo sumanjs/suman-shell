@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const cp = require("child_process");
 const logging_1 = require("./logging");
 exports.makeExecute = function (exec, projectRoot) {

@@ -4,16 +4,14 @@ node_modules
 .idea
 scripts
 test
+lib
 
 ### matching
-*.sh
 *.txt
 *.md
-*.ts
 *.json
 *.yml
 *.log
-*.DS_Store
 
 ### files
 .editorconfig
@@ -22,7 +20,6 @@ suman.conf.js
 .gitignore
 yarn.lock
 
-### negation
-!*.d.ts
+
 
 

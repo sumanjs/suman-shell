@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const logging_1 = require("./logging");
 const path = require("path");
 const fs = require("fs");

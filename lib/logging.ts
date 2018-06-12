@@ -23,3 +23,6 @@ export const log = {
     stderr && console.error('\n');
   }
 };
+
+
+export default log;
