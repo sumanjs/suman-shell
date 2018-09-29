@@ -4,9 +4,14 @@
 import cp = require('child_process');
 import path = require('path');
 
+//npm
+import chalk from 'chalk';
+
 //project
 import {log} from "./logging";
 const sumanGlobalModulesPath = path.resolve(process.env.HOME + '/.suman/global');
+
+////////////////////////////////////////////////////////////
 
 export const loadInquirer = function () {
   

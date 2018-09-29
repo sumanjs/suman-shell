@@ -1,5 +1,15 @@
+'use strict';
+
+//core
 import * as cp from 'child_process'
+
+//npm
+import chalk from 'chalk';
+
+//project
 import {log} from './logging';
+
+////////////////////////////////////////////////////////////////////////////
 
 export interface IOptions {
   commands: Array<string>;

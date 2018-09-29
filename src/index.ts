@@ -9,18 +9,14 @@ const global = require('suman-browser-polyfills/modules/global');
 
 //core
 import * as path from 'path';
-import * as cp from 'child_process';
-import * as util from 'util';
 
 //npm
-import * as residence from 'residence';
 import {Pool} from 'poolio';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as fs from 'fs';
 import {Writable} from 'stream';
 import * as Vorpal from 'vorpal';
 const fsAutocomplete = require('vorpal-autocomplete-fs');
-import {pt} from 'prepend-transform';
 import * as _ from 'lodash';
 
 //project

@@ -9,6 +9,7 @@ import residence = require('residence');
 import path = require('path');
 import util = require('util');
 import fs = require('fs');
+import chalk from 'chalk';
 
 // project
 const _suman = global.__suman = (global.__suman || {});

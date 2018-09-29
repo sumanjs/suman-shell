@@ -1,7 +1,8 @@
 import {log} from "./logging";
-import {Pool} from "../../../poolio";
+import {Pool} from "poolio";
 import path = require('path');
 import fs = require('fs');
+import chalk from 'chalk';
 
 export const makeRunFiles = function (p: Pool, projectRoot: string) {
   

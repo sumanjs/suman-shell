@@ -13,10 +13,10 @@ import * as cp from 'child_process';
 import * as util from 'util';
 
 //npm
-import JSONStdio = require('json-stdio');
+import stdio = require('json-stdio');
 import * as residence from 'residence';
 import {Pool} from 'poolio';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as fs from 'fs';
 import {Writable} from 'stream';
 import {pt} from 'prepend-transform';
@@ -92,11 +92,11 @@ export const makeFindPrompt = function (p: Pool, projectRoot: string) {
     });
 
     // let parser = JSONStdio.createParser('@suman-shell-json-stdio');
-    let parser = JSONStdio.createParser(su.constants.JSON_STDIO_SUMAN_SHELL);
+    let parser = stdio.createParser(su.constants.JSON_STDIO_SUMAN_SHELL);
     // let parser = JSONStdio.createParser();
 
 
-    k.stdout.pipe(parser).on(JSONStdio.stdEventName, function (obj: any) {
+    k.stdout.pipe(parser).on(stdio.stdEventName, function (obj: any) {
 
       if (obj && obj.file) {
         files.push(obj.file);

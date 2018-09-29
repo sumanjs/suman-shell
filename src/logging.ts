@@ -8,7 +8,7 @@ const global = require('suman-browser-polyfills/modules/global');
 import chalk from 'chalk';
 
 //project
-const name = ' [suman-shell] ';
+const name = 'suman-shell:';
 
 ///////////////////////////////////////////////////////////////////////////
 
