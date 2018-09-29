@@ -4,7 +4,7 @@ node_modules
 .idea
 scripts
 test
-lib
+src
 
 ### matching
 *.txt

@@ -21,6 +21,6 @@
   },
   "compileOnSave": false,
   "include": [
-    "lib"
+    "src"
   ]
 }

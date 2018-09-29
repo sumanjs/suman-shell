@@ -5,7 +5,7 @@ const process = require('suman-browser-polyfills/modules/process');
 const global = require('suman-browser-polyfills/modules/global');
 
 //npm
-import  chalk = require('chalk');
+import chalk from 'chalk';
 
 //project
 const name = ' [suman-shell] ';
@@ -23,6 +23,5 @@ export const log = {
     stderr && console.error('\n');
   }
 };
-
 
 export default log;

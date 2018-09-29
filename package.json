@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/sumanjs/suman-shell#readme",
   "dependencies": {
-    "chalk": "^1.1.3",
+    "chalk": "^2.4.1",
     "json-stdio": "latest",
     "lodash": "^4.17.4",
     "poolio": "latest",
@@ -39,9 +39,9 @@
     "vorpal-autocomplete-fs": "0.0.3"
   },
   "devDependencies": {
-    "@types/chalk": "^0.4.31",
     "@types/lodash": "^4.14.97",
     "@types/node": "^8.0.1",
+    "@types/vorpal": "^1.11.0",
     "bluebird": "^3.5.0"
   }
 }

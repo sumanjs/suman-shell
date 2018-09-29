@@ -4,13 +4,14 @@ node_modules
 coverage
 .nyc_output
 .vscode
-.vs_code
+dist
 
 ### matching
 *.log
-*.html
+
 
 ### files
-package-lock.json
 yarn.lock
 
+### negation
+!dist/README.md
