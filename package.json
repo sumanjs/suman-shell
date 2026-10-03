@@ -4,7 +4,9 @@
   "description": "suman-shell - helps run suman tests quickly via the command line.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "suman --default"
+    "test": "suman --default",
+    "lint:ores": "if [ -f .ores-lint/lint.sh ]; then sh .ores-lint/lint.sh; else echo 'ores-lint not installed'; fi",
+    "prepublishOnly": "npm run lint:ores"
   },
   "repository": {
     "type": "git",
@@ -43,5 +45,13 @@
     "@types/node": "^8.0.1",
     "@types/vorpal": "^1.11.0",
     "bluebird": "^3.5.0"
+  },
+  "oresLint": {
+    "note": "Declared, not installed. ores-lint resolves these from a global install - see .ores-lint/README.md",
+    "requires": {
+      "eslint": ">=9",
+      "typescript-eslint": ">=8 (optional; without it .ts files are skipped)"
+    },
+    "install": "npm i -g eslint typescript-eslint"
   }
 }
